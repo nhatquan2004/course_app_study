@@ -1,0 +1,3 @@
+[2026-07-03 21:21:08] [INFO]: Tạo người dùng thành công: quan123
+[2026-07-03 21:23:21] [INFO]: Tạo người dùng thành công: quan123
+[2026-07-03 21:26:14] [ERROR]: Lỗi tạo người dùng: Illegal arguments: undefined, string
