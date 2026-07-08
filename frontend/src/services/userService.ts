@@ -21,7 +21,7 @@ export async function registerUser(userData: RegisterPayload) {
   return res.data;
 }
 
-export async function loginUser(userData: any) {
+export async function loginUser(userData: LoginPayload) {
   try {
     const res = await instance.post(`${API_BASE_URL}/auth/login`, userData);
     return res;

@@ -1,3 +1,3 @@
-import CourseList from "@/features/courses/components/CourseList";
+import CourseList from "@/modules/admin/components/CourseList";
 
 export default CourseList;

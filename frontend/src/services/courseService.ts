@@ -1,9 +1,8 @@
 import { API_BASE_URL } from "@/config/api";
 import type {
-  Course,
   CreateCoursePayload,
   UpdateCoursePayload,
-} from "@/features/courses/types";
+} from "@/modules/admin/types";
 import { revalidatePath } from "next/cache";
 import instance from "@/common/interceptor";
 
@@ -13,7 +12,7 @@ export async function getCourses() {
   try {
     const res = await instance.get(COURSES_URL);
     return res.data;
-  } catch (err: any) {
+  } catch (err) {
     console.error(err);
   }
 }
@@ -23,7 +22,7 @@ export async function createCourse(courseData: CreateCoursePayload) {
   return res.data;
 }
 
-export async function updateCourse(id: string, courseData: any) {
+export async function updateCourse(id: string, courseData: UpdateCoursePayload) {
   const res = await instance.patch(`${COURSES_URL}/${id}`, courseData);
   // revalidatePath(COURSES_URL);
   return res;

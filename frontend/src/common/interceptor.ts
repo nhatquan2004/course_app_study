@@ -32,14 +32,15 @@ instance.interceptors.response.use(
 			} else if (statusCode === 500) {
 				console.error('Lỗi kết nối với server');
 			} else {
+				console.error(`Lỗi ${statusCode}: ${errorMessage}`);
 				redirect('/error');
-				//console.error(`Lỗi ${statusCode}: ${errorMessage}`);
 			}
 		} else if (error.request) {
 			console.error('Lỗi network - vui lòng kiểm tra đường truyền');
 		} else {
 			console.error(`Request error: `, error.message);
 		}
+		return Promise.reject(error);
 	},
 );
 

@@ -1,5 +1,5 @@
-import type { Course } from '@/features/courses/types';
-import { deleteCourseAction } from '../courseActions';
+import type { Course } from '../types';
+import { deleteCourseAction } from '../actions/courseActions';
 
 type CourseItemProps = {
 	course: Course;

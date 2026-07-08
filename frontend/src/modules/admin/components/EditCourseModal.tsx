@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { Course } from "@/features/courses/types";
-import { updateCourseAction } from "../courseActions";
+import type { Course } from "../types";
+import { updateCourseAction } from "../actions/courseActions";
 
 type Props = {
   course: Course;
@@ -30,9 +30,9 @@ export default function EditCourseModal({ course, onClose }: Props) {
 
   return (
     <form
-      action={async (formData) =>
-        (await updateCourseAction(course._id, formData)) as any
-      }
+      action={async (formData) => {
+        await updateCourseAction(course._id, formData);
+      }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
     >
       <div className="w-full max-w-md rounded-lg bg-white p-6">

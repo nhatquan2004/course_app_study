@@ -6,8 +6,8 @@ import { cookies } from 'next/headers';
 
 
 export async function login(formData: FormData) {
-   const username = formData.get('username');
-   const password = formData.get('password');
+   const username = formData.get('username')?.toString() || '';
+   const password = formData.get('password')?.toString() || '';
    const response = await loginUser({ username, password });
 
    console.log(response);

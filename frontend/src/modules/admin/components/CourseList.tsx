@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import CourseItem from '@/features/courses/components/CourseItem';
-import EditCourseModal from '@/features/courses/components/EditCourseModal';
-import type { Course } from '@/features/courses/types';
+import { useState } from 'react';
+import CourseItem from './CourseItem';
+import EditCourseModal from './EditCourseModal';
+import type { Course } from '../types';
 
 export default function CourseList({ courseList }: { courseList: Course[] }) {
 	const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-	const router = useRouter();
 
 	return (
 		<div className="w-full max-w-3xl">
