@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import CourseList from '@/modules/admin/components/CourseList';
+import CourseList from '@/modules/courses/components/CourseList';
 import NavBar from '../components/NavBar';
 import LogoutButton from '../components/LogoutButton';
-import type { Course } from '@/modules/admin/types';
+import type { Course } from '@/modules/courses/types';
 
 export default function HomeClientPage({ initialCourses }: { initialCourses: Course[] }) {
 	return (

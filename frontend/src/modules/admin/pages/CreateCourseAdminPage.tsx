@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createCourseAction } from '@/modules/admin/actions/courseActions';
+import { createCourseAction } from '@/modules/courses/actions/courseActions';
 
 export default function CreateCourseAdminPage() {
 	const [name, setName] = useState('');

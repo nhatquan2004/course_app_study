@@ -2,7 +2,7 @@ import { API_BASE_URL } from "@/config/api";
 import type {
   CreateCoursePayload,
   UpdateCoursePayload,
-} from "@/modules/admin/types";
+} from "@/modules/courses/types";
 import { revalidatePath } from "next/cache";
 import instance from "@/common/interceptor";
 
