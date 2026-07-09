@@ -10,7 +10,7 @@ async function getCourses() {
 	}
 }
 
-async function updateCourse(id, name, description, price, coverImage, categoryId) {
+async function updateCourse(id, name, description, price, coverImage, categoryIds) {
 	try {
 		const course = await Course.findByIdAndUpdate(
 			id,
@@ -19,7 +19,7 @@ async function updateCourse(id, name, description, price, coverImage, categoryId
 				description,
 				price,
 				coverImage,
-				categoryId,
+				categoryIds,
 			},
 			{
 				new: true,
@@ -32,14 +32,14 @@ async function updateCourse(id, name, description, price, coverImage, categoryId
 	}
 }
 
-async function createCourse(name, description, price, coverImage, categoryId) {
+async function createCourse(name, description, price, coverImage, categoryIds) {
 	try {
 		const course = await Course.create({
 			name,
 			description,
 			price,
 			coverImage,
-			categoryId,
+			categoryIds,
 			createdAt: new Date(),
 		});
 

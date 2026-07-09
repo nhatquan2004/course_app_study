@@ -12,7 +12,7 @@ export async function updateCourseAction(courseId: string, formData: FormData) {
 		description: formData.get('description')?.toString() || '',
 		coverImage: formData.get('coverImage')?.toString() || '',
 		price: Number(formData.get('price')),
-		categoryId: Number(formData.get('categoryId')),
+		categoryIds: formData.getAll('categoryIds').map(id => id.toString()),
 	};
 
 	return await updateCourse(courseId, courseUpdateData);

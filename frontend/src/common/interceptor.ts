@@ -1,19 +1,28 @@
 import axios from 'axios';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { getCookieValue } from './cookie';
 
 const instance = axios.create();
 
 instance.interceptors.request.use(
 	async function (config) {
-		const cookieStore = cookies();
-		const token = (await cookieStore).get('loginToken');
-		config.headers.Authorization = `Bearer ${token?.value}`;
+		let token = '';
+		if (typeof window !== 'undefined') {
+			token = getCookieValue('loginToken') || '';
+		} else {
+			// Hãy để Next.js tự ném lỗi dynamic server usage khi build để Next.js biết route này cần render dynamic.
+			const { cookies } = require('next/headers');
+			const cookieStore = cookies();
+			token = (await cookieStore).get('loginToken')?.value || '';
+		}
+
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`;
+		}
 
 		return config;
 	},
 	function (error) {
-		// Do something with request error
 		return Promise.reject(error);
 	},
 );

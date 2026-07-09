@@ -15,14 +15,14 @@ async function getCourses(req, res) {
 
 async function updateCourse(req, res) {
 	const { id } = req.params;
-	const { name, description, price, coverImage, categoryId } = req.body;
+	const { name, description, price, coverImage, categoryIds } = req.body;
 	const course = await courseService.updateCourse(
 		id,
 		name,
 		description,
 		price,
 		coverImage,
-		categoryId,
+		categoryIds,
 	);
 	res.send({
 		status: 200,
@@ -32,9 +32,9 @@ async function updateCourse(req, res) {
 }
 
 async function createCourse(req, res) {
-	const { name, description, price, coverImage, categoryId } = req.body;
+	const { name, description, price, coverImage, categoryIds } = req.body;
 
-	const course = await courseService.createCourse(name, description, price, coverImage, categoryId);
+	const course = await courseService.createCourse(name, description, price, coverImage, categoryIds);
 
 	res.send({
 		status: 200,

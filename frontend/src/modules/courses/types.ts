@@ -4,7 +4,7 @@ export type Course = {
 	description: string;
 	price: number;
 	coverImage?: string;
-	categoryId?: number;
+	categoryIds?: string[];
 };
 
 export type CreateCoursePayload = {
@@ -12,7 +12,7 @@ export type CreateCoursePayload = {
 	description: string;
 	price: number;
 	coverImage: string;
-	categoryId: number;
+	categoryIds: string[];
 };
 
 export type UpdateCoursePayload = CreateCoursePayload;

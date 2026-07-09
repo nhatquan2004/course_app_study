@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const courseSchema = new Schema({
@@ -6,9 +6,9 @@ const courseSchema = new Schema({
     description: String,
     price: Number,
     coverImage: String,
-    categoryId: Number,
+    categoryIds: [String],
 });
 
-const Course = mongoose.model('Course', courseSchema)
+const Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;

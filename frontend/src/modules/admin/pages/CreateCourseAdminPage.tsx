@@ -2,13 +2,20 @@
 
 import { useState } from 'react';
 import { createCourseAction } from '@/modules/courses/actions/courseActions';
+import type { Category } from '@/modules/categories/types';
 
-export default function CreateCourseAdminPage() {
+export default function CreateCourseAdminPage({ categories }: { categories: Category[] }) {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [price, setPrice] = useState('');
 	const [coverImage, setCoverImage] = useState('');
-	const [category, setCategory] = useState('');
+	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+
+	function handleCategoryToggle(id: string) {
+		setSelectedCategoryIds(prev =>
+			prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+		);
+	}
 
 	return (
 		<div className="min-h-screen w-full bg-[radial-gradient(circle_at_top,#0ea5e9_0%,#020617_35%,#020617_100%)] px-6 py-10 text-white">
@@ -70,13 +77,26 @@ export default function CreateCourseAdminPage() {
 							</div>
 
 							<div>
-								<p className="mb-2 text-sm font-medium text-slate-200">Phân loại khóa học</p>
-								<input
-									className="w-full rounded-2xl border border-cyan-400/20 bg-white/10 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-400/20"
-									value={category}
-									onChange={e => setCategory(e.target.value)}
-									placeholder="Nhập category"
-								/>
+								<p className="mb-2 text-sm font-medium text-slate-200">Phân loại khóa học (Chọn nhiều)</p>
+								<div className="space-y-2 max-h-40 overflow-y-auto rounded-2xl border border-cyan-400/20 bg-slate-900/50 p-4">
+									{categories.map(cat => {
+										const isChecked = selectedCategoryIds.includes(cat._id);
+										return (
+											<label key={cat._id} className="flex items-center gap-3 cursor-pointer text-slate-200 hover:text-white select-none">
+												<input
+													type="checkbox"
+													checked={isChecked}
+													onChange={() => handleCategoryToggle(cat._id)}
+													className="w-4 h-4 rounded border-cyan-400/20 bg-slate-800 text-cyan-500 focus:ring-cyan-500"
+												/>
+												<span className="text-sm">{cat.categoryName}</span>
+											</label>
+										);
+									})}
+									{categories.length === 0 && (
+										<p className="text-sm text-slate-500 italic">Chưa có danh mục nào. Hãy tạo danh mục trước.</p>
+									)}
+								</div>
 							</div>
 
 							<button
@@ -88,7 +108,7 @@ export default function CreateCourseAdminPage() {
 										description: description,
 										price: Number(price),
 										coverImage: coverImage,
-										categoryId: Number(category),
+										categoryIds: selectedCategoryIds,
 									};
 
 									await createCourseAction(courseData);
