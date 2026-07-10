@@ -2,13 +2,6 @@ const courseService = require('../../services/course');
 const Course = require('../../schemas/courseSchema');
 
 async function getCourses(req, res) {
-	console.log(req);
-	const { role } = req.user;
-
-	if (role !== 'admin') {
-		return res.status(403).json({ message: 'Bạn không có quyền truy cập admin' });
-	}
-
 	const coursesList = await courseService.getCourses();
 	res.send(coursesList);
 }
@@ -34,7 +27,13 @@ async function updateCourse(req, res) {
 async function createCourse(req, res) {
 	const { name, description, price, coverImage, categoryIds } = req.body;
 
-	const course = await courseService.createCourse(name, description, price, coverImage, categoryIds);
+	const course = await courseService.createCourse(
+		name,
+		description,
+		price,
+		coverImage,
+		categoryIds,
+	);
 
 	res.send({
 		status: 200,
