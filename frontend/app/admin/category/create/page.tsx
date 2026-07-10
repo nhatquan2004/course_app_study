@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { createCategoryAction } from '@/modules/categories/actions/categoryActions';
 
 export default function CreateCategoryPage() {
@@ -22,36 +23,46 @@ export default function CreateCategoryPage() {
 			} else {
 				setMessage(res.message || 'Tạo danh mục thất bại.');
 			}
-		} catch (err: any) {
-			setMessage(err.response?.data?.message || 'Có lỗi xảy ra.');
+		} catch (err: unknown) {
+			const error = err as { response?: { data?: { message?: string } } };
+			setMessage(error.response?.data?.message || 'Có lỗi xảy ra.');
 		}
 	}
 
 	return (
-		<div className="min-h-screen w-full bg-[radial-gradient(circle_at_top,#0ea5e9_0%,#020617_35%,#020617_100%)] px-6 py-10 text-white flex items-center justify-center">
-			<div className="w-full max-w-md rounded-[32px] border border-cyan-400/20 bg-white/10 p-8 shadow-2xl backdrop-blur-xl">
-				<h1 className="text-3xl font-bold mb-6 text-center">Thêm Danh Mục Mới</h1>
-				<form onSubmit={handleSubmit} className="space-y-4">
+		<div className="min-h-screen w-full bg-gradient-to-tr from-slate-50 via-blue-50/20 to-slate-100 px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
+			<div className="w-full max-w-md rounded-[32px] border border-slate-200/60 bg-white/70 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] backdrop-blur-md">
+				<h1 className="text-3xl font-light mb-6 text-center text-slate-900">Thêm danh mục mới</h1>
+				
+				<form onSubmit={handleSubmit} className="space-y-5">
 					<div>
-						<label className="block mb-2 text-sm font-medium">Tên danh mục</label>
+						<label className="block mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Tên danh mục</label>
 						<input
 							type="text"
 							value={categoryName}
 							onChange={e => setCategoryName(e.target.value)}
 							placeholder="Nhập tên danh mục..."
 							required
-							className="w-full rounded-2xl border border-cyan-400/20 bg-white/10 px-4 py-3 text-white outline-none focus:border-cyan-300"
+							className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 shadow-sm"
 						/>
 					</div>
 					
-					{message && <p className="text-sm text-cyan-200 text-center">{message}</p>}
+					{message && <p className="text-sm text-blue-600 text-center">{message}</p>}
 
-					<button
-						type="submit"
-						className="w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-400 py-3 font-bold hover:scale-[1.02] transition"
-					>
-						Tạo danh mục →
-					</button>
+					<div className="flex gap-3">
+						<Link
+							href="/admin/category"
+							className="flex-1 rounded-2xl border border-slate-200 bg-white py-4 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-[0.98]"
+						>
+							Hủy
+						</Link>
+						<button
+							type="submit"
+							className="flex-[2] rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 shadow-lg hover:shadow-blue-500/10 transition-all duration-200 active:scale-[0.98]"
+						>
+							Tạo danh mục →
+						</button>
+					</div>
 				</form>
 			</div>
 		</div>

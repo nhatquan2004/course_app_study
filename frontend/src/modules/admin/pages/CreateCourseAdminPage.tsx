@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { createCourseAction } from '@/modules/courses/actions/courseActions';
 import type { Category } from '@/modules/categories/types';
 
@@ -10,6 +11,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 	const [price, setPrice] = useState('');
 	const [coverImage, setCoverImage] = useState('');
 	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
 	function handleCategoryToggle(id: string) {
 		setSelectedCategoryIds(prev =>
@@ -17,91 +19,161 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 		);
 	}
 
+	const labelClassName = 'block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5';
+	const inputClassName =
+		'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 shadow-xs';
+
 	return (
-		<div className="min-h-screen w-full bg-[radial-gradient(circle_at_top,#0ea5e9_0%,#020617_35%,#020617_100%)] px-6 py-10 text-white">
-			<div className="mx-auto flex min-h-[calc(100vh-80px)] max-w-6xl items-center justify-center">
-				<div className="grid w-full gap-10 rounded-[32px] border border-cyan-400/20 bg-white/10 p-8 shadow-[0_0_60px_rgba(14,165,233,0.25)] backdrop-blur-xl md:grid-cols-2 md:p-12">
-					<div className="flex flex-col justify-center">
-						<p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-cyan-300">
-							Admin Course
-						</p>
-
-						<h1 className="text-4xl font-bold leading-tight md:text-6xl">Thêm khóa học mới</h1>
-
-						<p className="mt-6 max-w-md text-base leading-7 text-slate-300">
-							Tạo khóa học mới với tên, mô tả, giá, hình ảnh cover và phân loại. Dữ liệu sẽ được gửi
-							lên Backend NodeJS Express.
+		<div className="min-h-screen w-full bg-gradient-to-tr from-slate-50 via-blue-50/10 to-slate-100 px-6 py-10 flex items-center justify-center text-slate-800">
+			<div className="w-full max-w-3xl mx-auto">
+				{/* Main Card */}
+				<div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+					{/* Header */}
+					<div className="border-b border-slate-100 px-8 py-6">
+						<p className="text-xs font-bold uppercase tracking-widest text-blue-600">Admin Area</p>
+						<h1 className="mt-1 text-2xl font-semibold text-slate-900">Thêm khóa học mới</h1>
+						<p className="mt-1.5 text-sm text-slate-500">
+							Nhập đầy đủ thông tin chi tiết dưới đây để tạo và xuất bản khóa học mới trên hệ thống.
 						</p>
 					</div>
 
-					<form className="rounded-[28px] border border-white/10 bg-slate-950/70 p-6 shadow-2xl">
-						<div className="space-y-5">
-							<div>
-								<p className="mb-2 text-sm font-medium text-slate-200">Tên khóa học</p>
+					{/* Form Body */}
+					<form className="p-8 space-y-6">
+						<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+							{/* Tên khóa học - Full Width */}
+							<div className="md:col-span-2">
+								<label className={labelClassName}>Tên khóa học</label>
 								<input
-									className="w-full rounded-2xl border border-cyan-400/20 bg-white/10 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-400/20"
+									className={inputClassName}
 									value={name}
 									onChange={e => setName(e.target.value)}
-									placeholder="Nhập tên khóa học"
+									placeholder="Ví dụ: Lập trình Next.js nâng cao"
 								/>
 							</div>
 
-							<div>
-								<p className="mb-2 text-sm font-medium text-slate-200">Thông tin chi tiết</p>
-								<input
-									className="w-full rounded-2xl border border-cyan-400/20 bg-white/10 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-400/20"
+							{/* Mô tả chi tiết - Full Width (Textarea) */}
+							<div className="md:col-span-2">
+								<label className={labelClassName}>Mô tả chi tiết</label>
+								<textarea
+									rows={3}
+									className={`${inputClassName} resize-none`}
 									value={description}
 									onChange={e => setDescription(e.target.value)}
-									placeholder="Nhập thông tin"
+									placeholder="Tóm tắt nội dung chính và mục tiêu của khóa học..."
 								/>
 							</div>
 
+							{/* Giá khóa học - Column 1 */}
 							<div>
-								<p className="mb-2 text-sm font-medium text-slate-200">Giá khóa học</p>
+								<label className={labelClassName}>Giá khóa học (VNĐ)</label>
 								<input
-									className="w-full rounded-2xl border border-cyan-400/20 bg-white/10 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-400/20"
+									type="number"
+									className={inputClassName}
 									value={price}
 									onChange={e => setPrice(e.target.value)}
-									placeholder="Nhập giá"
+									placeholder="Ví dụ: 299000"
 								/>
 							</div>
 
+							{/* Link ảnh Cover - Column 2 */}
 							<div>
-								<p className="mb-2 text-sm font-medium text-slate-200">Hình ảnh Cover</p>
+								<label className={labelClassName}>Hình ảnh Cover (URL)</label>
 								<input
-									className="w-full rounded-2xl border border-cyan-400/20 bg-white/10 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-400/20"
+									className={inputClassName}
 									value={coverImage}
 									onChange={e => setCoverImage(e.target.value)}
-									placeholder="Nhập link ảnh cover"
+									placeholder="https://example.com/cover.jpg"
 								/>
 							</div>
 
-							<div>
-								<p className="mb-2 text-sm font-medium text-slate-200">Phân loại khóa học (Chọn nhiều)</p>
-								<div className="space-y-2 max-h-40 overflow-y-auto rounded-2xl border border-cyan-400/20 bg-slate-900/50 p-4">
-									{categories.map(cat => {
-										const isChecked = selectedCategoryIds.includes(cat._id);
-										return (
-											<label key={cat._id} className="flex items-center gap-3 cursor-pointer text-slate-200 hover:text-white select-none">
-												<input
-													type="checkbox"
-													checked={isChecked}
-													onChange={() => handleCategoryToggle(cat._id)}
-													className="w-4 h-4 rounded border-cyan-400/20 bg-slate-800 text-cyan-500 focus:ring-cyan-500"
-												/>
-												<span className="text-sm">{cat.categoryName}</span>
-											</label>
-										);
-									})}
-									{categories.length === 0 && (
-										<p className="text-sm text-slate-500 italic">Chưa có danh mục nào. Hãy tạo danh mục trước.</p>
+							{/* Danh mục khóa học - Custom Multi-Select Dropdown */}
+							<div className="md:col-span-2 relative">
+								<label className={labelClassName}>Danh mục khóa học (Chọn nhiều)</label>
+								
+								{/* Selection Box / Trigger */}
+								<div
+									onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+									className="min-h-[46px] w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-800 outline-none transition focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500/30 shadow-xs flex flex-wrap items-center gap-2 cursor-pointer select-none"
+								>
+									{selectedCategoryIds.length > 0 ? (
+										<div className="flex flex-wrap gap-1.5">
+											{selectedCategoryIds.map(id => {
+												const cat = categories.find(c => c._id === id);
+												if (!cat) return null;
+												return (
+													<span
+														key={cat._id}
+														className="inline-flex items-center gap-1 rounded-md bg-blue-50 pl-2 pr-1 py-1 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10"
+													>
+														{cat.categoryName}
+														<button
+															type="button"
+															onClick={(e) => {
+																e.stopPropagation();
+																handleCategoryToggle(cat._id);
+															}}
+															className="inline-flex items-center justify-center w-4 h-4 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-800 transition"
+														>
+															✕
+														</button>
+													</span>
+												);
+											})}
+										</div>
+									) : (
+										<span className="text-slate-400">Chọn danh mục khóa học...</span>
 									)}
-								</div>
-							</div>
 
+									{/* Chevron icon */}
+									<div className="ml-auto pointer-events-none text-slate-400 font-bold text-[10px]">
+										{isDropdownOpen ? '▲' : '▼'}
+									</div>
+								</div>
+
+								{/* Dropdown Options List */}
+								{isDropdownOpen && (
+									<div className="absolute z-10 w-full mt-1.5 rounded-lg border border-slate-200 bg-white shadow-lg max-h-56 overflow-y-auto p-1.5 space-y-1">
+										{categories.map(cat => {
+											const isSelected = selectedCategoryIds.includes(cat._id);
+											return (
+												<div
+													key={cat._id}
+													onClick={(e) => {
+														e.stopPropagation();
+														handleCategoryToggle(cat._id);
+													}}
+													className={`flex items-center justify-between px-3.5 py-2.5 text-sm rounded-md cursor-pointer select-none transition ${
+														isSelected
+															? 'bg-blue-50/60 text-blue-700 font-semibold'
+															: 'text-slate-700 hover:bg-slate-50'
+													}`}
+												>
+													<span>{cat.categoryName}</span>
+													{isSelected && (
+														<span className="text-blue-600 font-bold">✓</span>
+													)}
+												</div>
+											);
+										})}
+										{categories.length === 0 && (
+											<p className="text-xs text-slate-400 italic p-3 text-center">Chưa có danh mục nào.</p>
+										)}
+									</div>
+								)}
+							</div>
+						</div>
+
+						{/* Footer Actions */}
+						<div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-6">
+							<Link
+								href="/"
+								className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-[0.98]"
+							>
+								Hủy
+							</Link>
 							<button
 								type="button"
-								className="mt-3 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-400 px-6 py-4 font-bold text-white shadow-[0_0_30px_rgba(14,165,233,0.45)] transition hover:scale-[1.02] hover:from-blue-500 hover:to-cyan-300 active:scale-[0.98]"
+								className="rounded-lg bg-blue-600 hover:bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 active:scale-[0.98]"
 								onClick={async () => {
 									const courseData = {
 										name: name,
@@ -113,7 +185,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 
 									await createCourseAction(courseData);
 								}}>
-								Create Course →
+								Tạo khóa học →
 							</button>
 						</div>
 					</form>

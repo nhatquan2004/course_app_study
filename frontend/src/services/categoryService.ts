@@ -13,3 +13,13 @@ export async function createCategory(payload: CreateCategoryPayload) {
   const res = await instance.post(CATEGORY_URL, payload);
   return res.data;
 }
+
+export async function updateCategory(id: string, payload: CreateCategoryPayload) {
+  const res = await instance.put(`${CATEGORY_URL}/${id}`, payload);
+  return res.data;
+}
+
+export async function deleteCategory(id: string) {
+  const res = await instance.delete(`${CATEGORY_URL}/${id}`);
+  return res.data;
+}

@@ -1,18 +1,20 @@
-export function getCookieValue(key: string) {
+export function getCookieValue(key: string): string | null {
 	if (typeof key !== 'string' || !key.trim()) {
 		console.error('Invalid cookie name');
 		return null;
 	}
 
-	// Add "; " at the start to simplify matching
+	if (typeof document === 'undefined') {
+		return null;
+	}
+
 	const cookies = '; ' + document.cookie;
 	const parts = cookies.split('; ' + encodeURIComponent(key) + '=');
 
-	console.log(parts);
-	// if (parts.length === 2) {
-	// 	// Decode in case the cookie value is URL-encoded
-	// 	return decodeURIComponent(parts.pop().split(';').shift());
-	// }
+	if (parts.length === 2) {
+		const cookieValue = parts.pop()?.split(';').shift();
+		return cookieValue ? decodeURIComponent(cookieValue) : null;
+	}
 
-	return parts[1].split(';')[0]; // Not found
+	return null;
 }

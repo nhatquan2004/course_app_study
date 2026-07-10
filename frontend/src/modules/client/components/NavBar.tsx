@@ -19,10 +19,10 @@ export default function NavBar() {
 					<Link
 						key={link.href}
 						href={link.href}
-						className={`rounded-md px-3 py-2 text-left text-sm font-medium transition ${
+						className={`rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-200 ${
 							isActive
-								? 'bg-zinc-900 text-white'
-								: 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+								? 'bg-blue-50 text-blue-600 font-semibold'
+								: 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
 						}`}>
 						{link.label}
 					</Link>
