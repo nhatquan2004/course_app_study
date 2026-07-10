@@ -8,19 +8,13 @@ async function getUser(req, res) {
 async function createUser(req, res) {
 	const { fullName, username, email, password, role } = req.body;
 
-	const user = await userService.createUser(
-		fullName,
-		username,
-		email,
-		password,
-		role
-	);
+	const user = await userService.createUser(fullName, username, email, password, role);
 
-	res.send({
-		status: 200,
-		message: 'Tạo người dùng thành công',
-		data: user,
-	});
+	if (!user) {
+		res.send({ status: 409, message: 'Tên đăng nhập đã được sử dụng' });
+	}
+
+	res.send({ status: 200, message: 'Tạo người dùng thành công', data: user });
 }
 
 module.exports = {

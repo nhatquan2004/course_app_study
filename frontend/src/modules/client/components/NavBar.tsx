@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 const links = [
 	{ href: '/', label: 'Khóa học' },
 	{ href: '/admin/category', label: 'Danh mục' },
+	{ href: '/admin/user_management', label: 'Quản lý người dùng' },
 ];
 
 export default function NavBar() {

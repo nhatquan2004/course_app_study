@@ -13,6 +13,14 @@ async function getUser() {
 
 async function createUser(fullName, username, email, password, role) {
 	try {
+		const existingUser = await User.findOne({ username: username });
+
+		console.log('trùng lặp', existingUser);
+
+		if (existingUser) {
+			throw new Error(`Tên đăng nhập này đã được sử dụng: ${username}`);
+		}
+
 		const salt = await bcrypt.genSalt(10);
 
 		const hashedPassword = await bcrypt.hash(password, salt);
