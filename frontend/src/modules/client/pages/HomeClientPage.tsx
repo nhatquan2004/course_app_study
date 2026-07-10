@@ -5,8 +5,15 @@ import CourseList from '@/modules/courses/components/CourseList';
 import NavBar from '../components/NavBar';
 import LogoutButton from '../components/LogoutButton';
 import type { Course } from '@/modules/courses/types';
+import type { Category } from '@/modules/categories/types';
 
-export default function HomeClientPage({ initialCourses }: { initialCourses: Course[] }) {
+export default function HomeClientPage({
+	initialCourses,
+	categories,
+}: {
+	initialCourses: Course[];
+	categories: Category[];
+}) {
 	return (
 		<div className="flex min-h-screen bg-slate-50/50 text-slate-800">
 			{/* Sidebar */}
@@ -39,14 +46,14 @@ export default function HomeClientPage({ initialCourses }: { initialCourses: Cou
 					</p>
 					<Link
 						href="/admin/course/create"
-						className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/10 hover:shadow hover:shadow-blue-500/20 transition-all duration-200 active:scale-95">
+						className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-500/10 hover:shadow hover:shadow-blue-500/20 transition-all duration-200 active:scale-95">
 						<span>+</span> Thêm khóa học
 					</Link>
 				</div>
 
 				{/* Grid List Section */}
 				<section className="flex-1 p-8 overflow-y-auto">
-					<CourseList courseList={initialCourses} />
+					<CourseList courseList={initialCourses} categories={categories} />
 				</section>
 			</main>
 		</div>

@@ -1,23 +1,22 @@
 'use server';
 import { createCourse, deleteCourse, updateCourse } from '@/services/courseService';
-import { CreateCoursePayload } from '../types';
+import { CreateCoursePayload, UpdateCoursePayload } from '../types';
+import { revalidatePath } from 'next/cache';
 
 export async function createCourseAction(courseData: CreateCoursePayload) {
-	return await createCourse(courseData);
+	const res = await createCourse(courseData);
+	revalidatePath('/');
+	return res;
 }
 
-export async function updateCourseAction(courseId: string, formData: FormData) {
-	const courseUpdateData = {
-		name: formData.get('name')?.toString() || '',
-		description: formData.get('description')?.toString() || '',
-		coverImage: formData.get('coverImage')?.toString() || '',
-		price: Number(formData.get('price')),
-		categoryIds: formData.getAll('categoryIds').map(id => id.toString()),
-	};
-
-	return await updateCourse(courseId, courseUpdateData);
+export async function updateCourseAction(courseId: string, courseUpdateData: UpdateCoursePayload) {
+	const res = await updateCourse(courseId, courseUpdateData);
+	revalidatePath('/');
+	return res;
 }
 
 export async function deleteCourseAction(courseId: string) {
-	return await deleteCourse(courseId);
+	const res = await deleteCourse(courseId);
+	revalidatePath('/');
+	return res;
 }

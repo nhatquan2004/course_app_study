@@ -4,8 +4,15 @@ import { useState } from 'react';
 import CourseItem from './CourseItem';
 import EditCourseModal from './EditCourseModal';
 import type { Course } from '../types';
+import type { Category } from '@/modules/categories/types';
 
-export default function CourseList({ courseList }: { courseList: Course[] }) {
+export default function CourseList({
+	courseList,
+	categories,
+}: {
+	courseList: Course[];
+	categories: Category[];
+}) {
 	const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
 	return (
@@ -17,7 +24,11 @@ export default function CourseList({ courseList }: { courseList: Course[] }) {
 			</div>
 
 			{selectedCourse && (
-				<EditCourseModal course={selectedCourse} onClose={() => setSelectedCourse(null)} />
+				<EditCourseModal
+					course={selectedCourse}
+					categories={categories}
+					onClose={() => setSelectedCourse(null)}
+				/>
 			)}
 		</div>
 	);

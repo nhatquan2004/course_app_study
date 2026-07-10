@@ -1,22 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Course } from "../types";
 import { updateCourseAction } from "../actions/courseActions";
-import { getCategories } from "@/services/categoryService";
 import type { Category } from "@/modules/categories/types";
 
 type Props = {
   course: Course;
+  categories: Category[];
   onClose: () => void;
 };
 
-export default function EditCourseModal({ course, onClose }: Props) {
-  const [categories, setCategories] = useState<Category[]>([]);
+export default function EditCourseModal({ course, categories, onClose }: Props) {
+  const router = useRouter();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(
     course.categoryIds || []
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     name: course.name,
@@ -24,14 +26,6 @@ export default function EditCourseModal({ course, onClose }: Props) {
     price: String(course.price),
     coverImage: course.coverImage ?? "",
   });
-
-  useEffect(() => {
-    async function loadCategories() {
-      const data = await getCategories();
-      setCategories(data || []);
-    }
-    loadCategories();
-  }, []);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -49,17 +43,36 @@ export default function EditCourseModal({ course, onClose }: Props) {
     );
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        name: form.name,
+        description: form.description,
+        price: Number(form.price) || 0,
+        coverImage: form.coverImage,
+        categoryIds: selectedCategoryIds,
+      };
+
+      await updateCourseAction(course._id, payload);
+      router.refresh(); // Làm mới dữ liệu hiển thị trên Dashboard
+      onClose();
+    } catch (err) {
+      console.error("Lỗi khi cập nhật khóa học:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
-    <form
-      action={async (formData) => {
-        // Vì chúng ta dùng các input type="hidden" name="categoryIds" cho các danh mục được chọn,
-        // formData.getAll('categoryIds') sẽ lấy được đầy đủ mảng danh mục.
-        await updateCourseAction(course._id, formData);
-        onClose();
-      }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-    >
-      <div className="w-full max-w-md rounded-lg bg-white p-6 text-stone-800 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md rounded-lg bg-white p-6 text-stone-800 shadow-2xl relative"
+      >
         <h2 className="mb-5 text-xl font-semibold">Sửa khóa học</h2>
 
         <div className="flex flex-col gap-4">
@@ -71,6 +84,7 @@ export default function EditCourseModal({ course, onClose }: Props) {
               onChange={handleChange}
               placeholder="Tên khóa học"
               className="w-full rounded-md border border-stone-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+              required
             />
           </div>
 
@@ -82,6 +96,7 @@ export default function EditCourseModal({ course, onClose }: Props) {
               onChange={handleChange}
               placeholder="Mô tả"
               className="w-full rounded-md border border-stone-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+              required
             />
           </div>
 
@@ -94,6 +109,7 @@ export default function EditCourseModal({ course, onClose }: Props) {
                 onChange={handleChange}
                 placeholder="Giá"
                 className="w-full rounded-md border border-stone-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+                required
               />
             </div>
 
@@ -108,11 +124,6 @@ export default function EditCourseModal({ course, onClose }: Props) {
               />
             </div>
           </div>
-
-          {/* Hidden inputs to pass categoryIds to Form Server Action */}
-          {selectedCategoryIds.map((id) => (
-            <input key={id} type="hidden" name="categoryIds" value={id} />
-          ))}
 
           {/* Custom Multi-Select Dropdown/Tag Input */}
           <div className="relative">
@@ -194,18 +205,20 @@ export default function EditCourseModal({ course, onClose }: Props) {
             type="button"
             onClick={onClose}
             className="rounded-md border px-4 py-2 text-sm"
+            disabled={isSubmitting}
           >
             Hủy
           </button>
 
           <button
             type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-white text-sm"
+            className="rounded-md bg-blue-600 px-4 py-2 text-white text-sm disabled:opacity-50"
+            disabled={isSubmitting}
           >
-            Lưu thay đổi
+            {isSubmitting ? "Đang lưu..." : "Lưu thay đổi"}
           </button>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
