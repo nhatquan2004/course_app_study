@@ -15,7 +15,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 
 	function handleCategoryToggle(id: string) {
 		setSelectedCategoryIds(prev =>
-			prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+			prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id],
 		);
 	}
 
@@ -24,13 +24,15 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 		'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 shadow-xs';
 
 	return (
-		<div className="min-h-screen w-full bg-gradient-to-tr from-slate-50 via-blue-50/10 to-slate-100 px-6 py-4 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
+		<div className="min-h-screen w-full bg-linear-to-tr from-slate-50 via-blue-50/10 to-slate-100 px-6 py-4 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
 			<div className="w-full max-w-2xl mx-auto">
 				{/* Main Card */}
 				<div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
 					{/* Header */}
 					<div className="border-b border-slate-100 px-8 py-4.5 bg-slate-50/50">
-						<p className="text-[10px] font-bold uppercase tracking-widest text-blue-600">Admin Area</p>
+						<p className="text-[10px] font-bold uppercase tracking-widest text-blue-600">
+							Admin Area
+						</p>
 						<h1 className="mt-0.5 text-xl font-bold text-slate-900">Thêm khóa học mới</h1>
 						<p className="mt-1 text-xs text-slate-500">
 							Nhập đầy đủ thông tin chi tiết dưới đây để tạo và xuất bản khóa học mới trên hệ thống.
@@ -89,12 +91,11 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 							{/* Danh mục khóa học - Custom Multi-Select Dropdown */}
 							<div className="md:col-span-2 relative">
 								<label className={labelClassName}>Danh mục khóa học (Chọn nhiều)</label>
-								
+
 								{/* Selection Box / Trigger */}
 								<div
 									onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-									className="min-h-[38px] w-full rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-800 outline-none transition focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500/30 shadow-xs flex flex-wrap items-center gap-1.5 cursor-pointer select-none"
-								>
+									className="min-h-9.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-800 outline-none transition focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500/30 shadow-xs flex flex-wrap items-center gap-1.5 cursor-pointer select-none">
 									{selectedCategoryIds.length > 0 ? (
 										<div className="flex flex-wrap gap-1">
 											{selectedCategoryIds.map(id => {
@@ -103,17 +104,15 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 												return (
 													<span
 														key={cat._id}
-														className="inline-flex items-center gap-1 rounded-md bg-blue-50 pl-2 pr-1 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10"
-													>
+														className="inline-flex items-center gap-1 rounded-md bg-blue-50 pl-2 pr-1 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10">
 														{cat.categoryName}
 														<button
 															type="button"
-															onClick={(e) => {
+															onClick={e => {
 																e.stopPropagation();
 																handleCategoryToggle(cat._id);
 															}}
-															className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-800 transition"
-														>
+															className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-800 transition">
 															✕
 														</button>
 													</span>
@@ -138,7 +137,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 											return (
 												<div
 													key={cat._id}
-													onClick={(e) => {
+													onClick={e => {
 														e.stopPropagation();
 														handleCategoryToggle(cat._id);
 													}}
@@ -146,17 +145,16 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 														isSelected
 															? 'bg-blue-50/60 text-blue-700 font-semibold'
 															: 'text-slate-700 hover:bg-slate-50'
-													}`}
-												>
+													}`}>
 													<span>{cat.categoryName}</span>
-													{isSelected && (
-														<span className="text-blue-600 font-bold">✓</span>
-													)}
+													{isSelected && <span className="text-blue-600 font-bold">✓</span>}
 												</div>
 											);
 										})}
 										{categories.length === 0 && (
-											<p className="text-xs text-slate-400 italic p-3 text-center">Chưa có danh mục nào.</p>
+											<p className="text-xs text-slate-400 italic p-3 text-center">
+												Chưa có danh mục nào.
+											</p>
 										)}
 									</div>
 								)}
@@ -167,8 +165,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 						<div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
 							<Link
 								href="/"
-								className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-[0.98]"
-							>
+								className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-[0.98]">
 								Hủy
 							</Link>
 							<button

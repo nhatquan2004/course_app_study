@@ -58,9 +58,9 @@ export default function RegisterClientPage() {
 		'w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 shadow-sm';
 
 	return (
-		<div className="min-h-screen w-full bg-gradient-to-tr from-slate-50 via-blue-50/20 to-slate-100 px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
+		<div className="min-h-screen w-full bg-linear-to-tr from-slate-50 via-blue-50/20 to-slate-100 px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
 			<div className="w-full max-w-5xl mx-auto flex items-center justify-center">
-				<div className="grid w-full overflow-hidden rounded-[32px] border border-slate-200/60 bg-white/70 shadow-[0_20px_50px_rgba(0,0,0,0.05)] backdrop-blur-md md:grid-cols-2">
+				<div className="grid w-full overflow-hidden rounded-4xl border border-slate-200/60 bg-white/70 shadow-[0_20px_50px_rgba(0,0,0,0.05)] backdrop-blur-md md:grid-cols-2">
 					{/* Left panel */}
 					<div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
 						<p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-blue-600">
