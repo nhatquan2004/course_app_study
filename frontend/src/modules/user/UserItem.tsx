@@ -1,4 +1,5 @@
 import { User } from './types';
+import { deleteUserAction } from './userActions';
 
 export default function UserItem({ user }: { user: User }) {
 	return (
@@ -28,12 +29,13 @@ export default function UserItem({ user }: { user: User }) {
 						className="rounded-lg border border-slate-200 hover:bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-800 transition active:scale-95">
 						Sửa
 					</button>
-
-					<button
-						type="button"
-						className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95">
-						Xóa
-					</button>
+					<form action={deleteUserAction.bind(null, user._id)}>
+						<button
+							type="submit"
+							className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95">
+							Xóa
+						</button>
+					</form>
 				</div>
 			</td>
 		</tr>

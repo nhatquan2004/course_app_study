@@ -17,7 +17,18 @@ async function createUser(req, res) {
 	res.send({ status: 200, message: 'Tạo người dùng thành công', data: user });
 }
 
+async function deleteUser(req, res) {
+	const deletedUser = await userService.deleteUser(req.params.id);
+
+	res.send({
+		status: 204,
+		message: 'Đã xóa người dùng',
+		data: deletedUser,
+	});
+}
+
 module.exports = {
 	getUser,
 	createUser,
+	deleteUser,
 };

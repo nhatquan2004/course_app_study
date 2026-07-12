@@ -20,6 +20,11 @@ export async function getUserList() {
 	return res.data;
 }
 
+export async function deleteUser(id: string) {
+	const res = await instance.delete(`${API_BASE_URL}/user/${id}`);
+	return res.data;
+}
+
 export async function registerUser(userData: RegisterPayload) {
 	const res = await instance.post(`${API_BASE_URL}/user/create`, userData);
 	return res.data;

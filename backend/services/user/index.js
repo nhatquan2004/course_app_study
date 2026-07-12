@@ -7,15 +7,13 @@ async function getUser() {
 
 		return users;
 	} catch (err) {
-		console.log('Cannot get users', err);
+		logger.error('Cannot get users', err);
 	}
 }
 
 async function createUser(fullName, username, email, password, role) {
 	try {
 		const existingUser = await User.findOne({ username: username });
-
-		console.log('trùng lặp', existingUser);
 
 		if (existingUser) {
 			throw new Error(`Tên đăng nhập này đã được sử dụng: ${username}`);
@@ -39,7 +37,18 @@ async function createUser(fullName, username, email, password, role) {
 	}
 }
 
+async function deleteUser(id) {
+	try {
+		const deletedUser = await User.findByIdAndDelete(id);
+
+		return deletedUser;
+	} catch (err) {
+		logger.error('Error: không thể xóa người dùng', err);
+	}
+}
+
 module.exports = {
 	getUser,
 	createUser,
+	deleteUser,
 };

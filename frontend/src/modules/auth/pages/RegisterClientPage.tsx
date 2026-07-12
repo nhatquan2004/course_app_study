@@ -1,58 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { registerUser } from '@/services/userService';
-import { useRouter } from 'next/router';
+import { useActionState } from 'react';
+import { registerAction } from '../authActions';
 
 export default function RegisterClientPage() {
-	const [form, setForm] = useState({
-		fullName: '',
-		username: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
+	const [state, formAction, pending] = useActionState(registerAction, {
+		success: false,
+		message: '',
 	});
-
-	const [message, setMessage] = useState('');
-
-	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const { name, value } = event.target;
-		setForm({
-			...form,
-			[name]: value,
-		});
-	}
-
-	async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		setMessage('');
-
-		if (form.password !== form.confirmPassword) {
-			setMessage('Mật khẩu xác nhận không khớp');
-			return;
-		}
-
-		const response = await registerUser({
-			fullName: form.fullName,
-			username: form.username,
-			email: form.email,
-			password: form.password,
-		});
-
-		if (response.status === 200) {
-			setMessage(response.message);
-			setForm({
-				fullName: '',
-				username: '',
-				email: '',
-				password: '',
-				confirmPassword: '',
-			});
-		} else {
-			setMessage(response.message);
-		}
-	}
 
 	const inputClassName =
 		'w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 shadow-sm';
@@ -85,20 +41,11 @@ export default function RegisterClientPage() {
 							<p className="mt-2 text-xs text-slate-400">Nhập đầy đủ thông tin để đăng ký.</p>
 						</div>
 
-						<form onSubmit={handleRegister} className="space-y-4">
-							<input
-								name="fullName"
-								value={form.fullName}
-								onChange={handleChange}
-								placeholder="Họ và tên"
-								className={inputClassName}
-								required
-							/>
+						<form action={formAction} className="space-y-4">
+							<input name="fullName" placeholder="Họ và tên" className={inputClassName} required />
 
 							<input
 								name="username"
-								value={form.username}
-								onChange={handleChange}
 								placeholder="Tên đăng nhập"
 								className={inputClassName}
 								required
@@ -107,8 +54,6 @@ export default function RegisterClientPage() {
 							<input
 								name="email"
 								type="email"
-								value={form.email}
-								onChange={handleChange}
 								placeholder="Email"
 								className={inputClassName}
 								required
@@ -117,8 +62,6 @@ export default function RegisterClientPage() {
 							<input
 								name="password"
 								type="password"
-								value={form.password}
-								onChange={handleChange}
 								placeholder="Mật khẩu"
 								className={inputClassName}
 								required
@@ -127,19 +70,25 @@ export default function RegisterClientPage() {
 							<input
 								name="confirmPassword"
 								type="password"
-								value={form.confirmPassword}
-								onChange={handleChange}
 								placeholder="Xác nhận mật khẩu"
 								className={inputClassName}
 								required
 							/>
 
-							{message && <p className="text-center text-sm text-cyan-700">{message}</p>}
+							{state.message && (
+								<p
+									className={`text-center text-sm ${
+										state.success ? 'text-green-600' : 'text-red-600'
+									}`}>
+									{state.message}
+								</p>
+							)}
 
 							<button
 								type="submit"
+								disabled={pending}
 								className="mt-2 w-full rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 active:scale-[0.98]">
-								Đăng ký
+								{pending ? 'Đang đăng ký...' : 'Đăng ký'}
 							</button>
 
 							<p className="mt-4 text-center text-xs text-slate-400">
