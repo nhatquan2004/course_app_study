@@ -7,13 +7,7 @@ import LogoutButton from '../components/LogoutButton';
 import type { Course } from '@/modules/courses/types';
 import type { Category } from '@/modules/categories/types';
 
-export default function HomeClientPage({
-	initialCourses,
-	categories,
-}: {
-	initialCourses: Course[];
-	categories: Category[];
-}) {
+export default function HomeClientPage() {
 	return (
 		<div className="flex min-h-screen bg-slate-50/50 text-slate-800">
 			{/* Sidebar */}
@@ -23,9 +17,7 @@ export default function HomeClientPage({
 					<div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-base">
 						C
 					</div>
-					<h1 className="text-lg font-bold text-slate-800 tracking-wide">
-						Course App
-					</h1>
+					<h1 className="text-lg font-bold text-slate-800 tracking-wide">Course App</h1>
 				</div>
 
 				<NavBar />
@@ -34,10 +26,6 @@ export default function HomeClientPage({
 			{/* Main Content Area */}
 			<main className="flex flex-1 flex-col min-w-0">
 				{/* Top Header */}
-				<header className="border-b border-slate-200 bg-white px-8 py-5 flex items-center justify-between shadow-xs">
-					<h2 className="text-xl font-bold text-slate-800">Khóa học</h2>
-					<LogoutButton />
-				</header>
 
 				{/* Action Toolbar */}
 				<div className="bg-white border-b border-slate-100 px-8 py-4 flex items-center justify-between">

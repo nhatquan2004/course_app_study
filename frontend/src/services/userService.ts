@@ -1,31 +1,35 @@
-import { API_BASE_URL } from "@/config/api";
-
-import axios from "axios";
+import { API_BASE_URL } from '@/config/api';
+import { cookies } from 'next/headers';
+import instance from '@/common/interceptor';
 
 type RegisterPayload = {
-  fullName: string;
-  username: string;
-  email: string;
-  password: string;
+	fullName: string;
+	username: string;
+	email: string;
+	password: string;
 };
 
 type LoginPayload = {
-  username: string;
-  password: string;
+	username: string;
+	password: string;
 };
 
-const instance = axios.create();
+export async function getUserList() {
+	const res = await instance.get(`${API_BASE_URL}/user`);
+
+	return res.data;
+}
 
 export async function registerUser(userData: RegisterPayload) {
-  const res = await instance.post(`${API_BASE_URL}/user/create`, userData);
-  return res.data;
+	const res = await instance.post(`${API_BASE_URL}/user/create`, userData);
+	return res.data;
 }
 
 export async function loginUser(userData: LoginPayload) {
-  try {
-    const res = await instance.post(`${API_BASE_URL}/auth/login`, userData);
-    return res;
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		const res = await instance.post(`${API_BASE_URL}/auth/login`, userData);
+		return res;
+	} catch (err) {
+		console.log(err);
+	}
 }

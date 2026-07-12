@@ -1,14 +1,17 @@
-import CategoryList from '@/modules/categories/components/CategoryList';
-import LogoutButton from '@/modules/client/components/LogoutButton';
-import NavBar from '@/modules/client/components/NavBar';
-import Link from 'next/link';
+import DashboardLayout from '@/modules/dashboard/DashboardLayout';
+import UserList from '@/modules/user/UserList';
+import { getUserList } from '@/services/userService';
 
-export const metadata = {
-	title: 'Quản lý danh mục | Course App',
-};
+export default async function UserListPage() {
+	const users = (await getUserList()) || [];
 
-export default async function UserManagementPage() {
-	// const categoryList = (await getCategories()) || [];
-
-	return <section className="flex-1 p-8 overflow-y-auto">Danh sách người dùng</section>;
+	return (
+		<DashboardLayout
+			title="Người dùng"
+			description="Danh sách tất cả người dùng"
+			createHref="/admin/user_management/create_new_user"
+			createLabel="Thêm người dùng">
+			<UserList users={users} />
+		</DashboardLayout>
+	);
 }

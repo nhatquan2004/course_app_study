@@ -1,15 +1,21 @@
 import { getCategories } from '@/services/categoryService';
 import CategoryList from '@/modules/categories/components/CategoryList';
-import NavBar from '@/modules/client/components/NavBar';
-import LogoutButton from '@/modules/client/components/LogoutButton';
-import Link from 'next/link';
+import DashboardLayout from '@/modules/dashboard/DashboardLayout';
 
 export const metadata = {
 	title: 'Quản lý danh mục | Course App',
 };
 
 export default async function CategoryPage() {
-	const categoryList = (await getCategories()) || [];
+	const categories = (await getCategories()) || [];
 
-	return <CategoryList categoryList={categoryList} />;
+	return (
+		<DashboardLayout
+			title="Phân loại"
+			description="Danh sách tất cả danh mục"
+			createHref="/admin/category/create"
+			createLabel="Thêm danh mục">
+			<CategoryList categoryList={categories} />
+		</DashboardLayout>
+	);
 }

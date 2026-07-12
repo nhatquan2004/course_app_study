@@ -7,10 +7,10 @@ import type { Course } from '../types';
 import type { Category } from '@/modules/categories/types';
 
 export default function CourseList({
-	courseList,
+	courses,
 	categories,
 }: {
-	courseList: Course[];
+	courses: Course[];
 	categories: Category[];
 }) {
 	const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -18,7 +18,7 @@ export default function CourseList({
 	return (
 		<div className="w-full">
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-				{courseList?.map(course => (
+				{courses?.map(course => (
 					<CourseItem key={course._id} course={course} onEdit={setSelectedCourse} />
 				))}
 			</div>

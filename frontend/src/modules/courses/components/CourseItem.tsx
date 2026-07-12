@@ -13,14 +13,12 @@ export default function CourseItem({ course, onEdit }: CourseItemProps) {
 			<div className="h-40 w-full bg-slate-100 relative overflow-hidden flex items-center justify-center">
 				{course.coverImage ? (
 					// eslint-disable-next-line @next/next/no-img-element
-					<img
-						src={course.coverImage}
-						alt={course.name}
-						className="object-cover h-full w-full"
-					/>
+					<img src={course.coverImage} alt={course.name} className="object-cover h-full w-full" />
 				) : (
-					<div className="w-full h-full bg-gradient-to-tr from-blue-500/10 to-indigo-500/10 flex items-center justify-center">
-						<span className="text-blue-500 text-xs font-semibold uppercase tracking-wider">Course App</span>
+					<div className="w-full h-full bg-linear-to-tr from-blue-500/10 to-indigo-500/10 flex items-center justify-center">
+						<span className="text-blue-500 text-xs font-semibold uppercase tracking-wider">
+							Course App
+						</span>
 					</div>
 				)}
 			</div>
@@ -29,27 +27,27 @@ export default function CourseItem({ course, onEdit }: CourseItemProps) {
 			<div className="p-5 flex-1 flex flex-col justify-between">
 				<div>
 					<h3 className="text-base font-bold text-slate-900 line-clamp-1">{course.name}</h3>
-					<p className="mt-1.5 text-xs text-slate-500 leading-relaxed line-clamp-2 h-8">{course.description}</p>
+					<p className="mt-1.5 text-xs text-slate-500 leading-relaxed line-clamp-2 h-8">
+						{course.description}
+					</p>
 				</div>
 
 				<div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
 					<span className="text-sm font-bold text-blue-600">
 						{course.price ? Number(course.price).toLocaleString('vi-VN') + ' VNĐ' : 'Miễn phí'}
 					</span>
-					
+
 					<div className="flex gap-1.5">
 						<button
 							type="button"
 							onClick={() => onEdit(course)}
-							className="rounded-lg border border-slate-200 hover:bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-800 transition active:scale-95"
-						>
+							className="rounded-lg border border-slate-200 hover:bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-800 transition active:scale-95">
 							Sửa
 						</button>
 						<button
 							type="button"
 							onClick={async () => await deleteCourseAction(course._id)}
-							className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95"
-						>
+							className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95">
 							Xóa
 						</button>
 					</div>
