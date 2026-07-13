@@ -58,7 +58,7 @@ export default function EditCourseModal({ course, categories, onClose }: Props) 
 			};
 
 			await updateCourseAction(course._id, payload);
-			router.refresh(); // Làm mới dữ liệu hiển thị trên Dashboard
+			router.refresh();
 			onClose();
 		} catch (err) {
 			console.error('Lỗi khi cập nhật khóa học:', err);
@@ -132,7 +132,6 @@ export default function EditCourseModal({ course, categories, onClose }: Props) 
 						</div>
 					</div>
 
-					{/* Custom Multi-Select Dropdown/Tag Input */}
 					<div className="relative">
 						<p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-stone-500">
 							Phân loại khóa học (Chọn nhiều)
@@ -173,7 +172,6 @@ export default function EditCourseModal({ course, categories, onClose }: Props) 
 							</div>
 						</div>
 
-						{/* Dropdown Options */}
 						{isDropdownOpen && (
 							<div className="absolute z-50 w-full mt-1.5 rounded-md border border-stone-200 bg-white shadow-xl max-h-48 overflow-y-auto p-1.5 space-y-0.5">
 								{categories.map(cat => {

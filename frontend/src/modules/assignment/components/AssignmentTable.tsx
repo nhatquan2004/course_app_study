@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Submission } from '../types';
 import GradingModal from './GradingModal';
+import SearchBar from '@/common/components/SearchBar';
 
 type Props = {
 	initialSubmissions: Submission[];
@@ -123,20 +124,12 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 	return (
 		<div className="w-full bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-xs">
 			<div className="p-6 border-b border-slate-100 bg-slate-50/20 flex flex-wrap gap-4 items-center">
-				<div className="relative w-full md:w-64">
-					<span className="absolute inset-y-0 left-3.5 flex items-center text-slate-400 pointer-events-none">
-						<svg className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-						</svg>
-					</span>
-					<input
-						type="text"
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-						placeholder="Search by student or assignment"
-						className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-4 text-xs text-slate-700 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-100 transition-all placeholder:text-slate-400"
-					/>
-				</div>
+				<SearchBar
+					value={searchQuery}
+					onChange={setSearchQuery}
+					placeholder="Search by student or assignment"
+					className="w-full md:w-64"
+				/>
 
 				<select
 					value={programFilter}
@@ -337,7 +330,6 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 				</table>
 			</div>
 
-			{/* Grading Modal Overlay */}
 			{selectedSubmission && (
 				<GradingModal
 					submission={selectedSubmission}
