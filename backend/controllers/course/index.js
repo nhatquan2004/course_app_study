@@ -43,12 +43,11 @@ async function createCourse(req, res) {
 }
 
 async function deleteCourse(req, res) {
-	const deletedCourse = await courseService.deleteCourse(req.params.id);
+	await courseService.deleteCourse(req.params.id);
 
 	res.send({
 		status: 204,
 		message: 'Đã xóa khóa học',
-		data: deletedCourse,
 	});
 }
 

@@ -1,5 +1,9 @@
+'use client';
+
 import type { Course } from '../types';
 import { deleteCourseAction } from '../actions/courseActions';
+import { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 
 type CourseItemProps = {
 	course: Course;
@@ -7,8 +11,29 @@ type CourseItemProps = {
 };
 
 export default function CourseItem({ course, onEdit }: CourseItemProps) {
+	const [openMenu, setOpenMenu] = useState(false);
+	const menuRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		function handleClickOutside(e: MouseEvent) {
+			if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+				setOpenMenu(false);
+			}
+		}
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, []);
+
+	async function handleDeleteCourse() {
+		setOpenMenu(false);
+		const data = await deleteCourseAction(course._id);
+		toast.success(data.message);
+	}
+
 	return (
-		<div className="flex bg-white rounded-xl border border-slate-200/80 overflow-hidden hover:border-slate-300 hover:shadow-xs transition-all duration-200 items-center pr-4 h-20">
+		<div className="flex bg-white rounded-xl border border-slate-200/80 overflow-visible hover:border-slate-300 hover:shadow-xs transition-all duration-200 items-center pr-4 h-20">
 			<div className="h-full w-32 bg-slate-100 relative overflow-hidden flex items-center justify-center shrink-0 border-r border-slate-100">
 				{course.coverImage ? (
 					<img src={course.coverImage} alt={course.name} className="object-cover h-full w-full" />
@@ -33,7 +58,41 @@ export default function CourseItem({ course, onEdit }: CourseItemProps) {
 					{course.price ? Number(course.price).toLocaleString('vi-VN') + ' VNĐ' : 'Miễn phí'}
 				</span>
 
-				<div className="flex gap-1.5">
+				{/* Menu Pop-up */}
+				<div className="relative" ref={menuRef}>
+					<button
+						type="button"
+						onClick={() => {
+							setOpenMenu(prev => !prev);
+						}}
+						className="rounded-lg p-2 hover:bg-slate-100 transition cursor-pointer">
+						{' '}
+						⋮
+					</button>
+
+					{openMenu && (
+						<div className="absolute right-0 mt-2 w-36 rounded-lg border border-slate-200 bg-white shadow-lg z-20">
+							<button
+								type="button"
+								onClick={() => {
+									onEdit(course);
+									setOpenMenu(false);
+								}}
+								className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">
+								Sửa
+							</button>
+
+							<button
+								type="button"
+								onClick={handleDeleteCourse}
+								className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">
+								Xóa
+							</button>
+						</div>
+					)}
+				</div>
+
+				{/* <div className="flex gap-1.5">
 					<button
 						type="button"
 						onClick={() => onEdit(course)}
@@ -46,7 +105,7 @@ export default function CourseItem({ course, onEdit }: CourseItemProps) {
 						className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600 hover:text-red-700 transition active:scale-95 cursor-pointer">
 						Xóa
 					</button>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

@@ -23,7 +23,7 @@ async function updateCourse(id, name, description, price, coverImage, categoryId
 			},
 			{
 				new: true,
-			}
+			},
 		);
 
 		return course;
@@ -52,8 +52,6 @@ async function createCourse(name, description, price, coverImage, categoryIds) {
 async function deleteCourse(id) {
 	try {
 		const deletedCourse = await Course.findByIdAndDelete(id);
-
-		return deletedCourse;
 	} catch (err) {
 		console.log('Error: không thể xóa khóa học', err);
 	}

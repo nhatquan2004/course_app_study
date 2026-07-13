@@ -18,12 +18,11 @@ async function createUser(req, res) {
 }
 
 async function deleteUser(req, res) {
-	const deletedUser = await userService.deleteUser(req.params.id);
+	await userService.deleteUser(req.params.id);
 
 	res.send({
 		status: 204,
 		message: 'Đã xóa người dùng',
-		data: deletedUser,
 	});
 }
 

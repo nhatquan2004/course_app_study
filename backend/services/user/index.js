@@ -39,11 +39,9 @@ async function createUser(fullName, username, email, password, role) {
 
 async function deleteUser(id) {
 	try {
-		const deletedUser = await User.findByIdAndDelete(id);
-
-		return deletedUser;
+		await User.findByIdAndDelete(id);
 	} catch (err) {
-		logger.error('Error: không thể xóa người dùng', err);
+		logger.error('Error: Không thể xóa người dùng', err);
 	}
 }
 

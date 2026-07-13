@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { Course } from '../types';
 import { updateCourseAction } from '../actions/courseActions';
 import type { Category } from '@/modules/categories/types';
+import { toast } from 'react-toastify';
 
 type Props = {
 	course: Course;
@@ -57,7 +58,10 @@ export default function EditCourseModal({ course, categories, onClose }: Props) 
 				categoryIds: selectedCategoryIds,
 			};
 
-			await updateCourseAction(course._id, payload);
+			const data = await updateCourseAction(course._id, payload);
+
+			toast.success(data.message);
+
 			router.refresh();
 			onClose();
 		} catch (err) {
