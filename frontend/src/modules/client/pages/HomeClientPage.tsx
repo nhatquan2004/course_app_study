@@ -7,7 +7,13 @@ import LogoutButton from '../components/LogoutButton';
 import type { Course } from '@/modules/courses/types';
 import type { Category } from '@/modules/categories/types';
 
-export default function HomeClientPage() {
+export default function HomeClientPage({
+	initialCourses,
+	categories,
+}: {
+	initialCourses: Course[];
+	categories: Category[];
+}) {
 	return (
 		<div className="flex min-h-screen bg-slate-50/50 text-slate-800">
 			{/* Sidebar */}
@@ -41,7 +47,7 @@ export default function HomeClientPage() {
 
 				{/* Grid List Section */}
 				<section className="flex-1 p-8 overflow-y-auto">
-					<CourseList courseList={initialCourses} categories={categories} />
+					<CourseList courses={initialCourses} categories={categories} />
 				</section>
 			</main>
 		</div>
