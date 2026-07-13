@@ -18,11 +18,9 @@ export default function DashboardLayout({
 	children,
 }: DashboardLayoutProps) {
 	return (
-		<div className="flex min-h-screen bg-stone-100 text-slate-800">
-			{/* Sidebar */}
+		<div className="flex h-screen w-screen overflow-hidden bg-stone-100 text-slate-800">
 			<aside className="w-64 border-r border-slate-200 bg-white px-5 py-8 flex flex-col gap-8 shrink-0">
 				<div className="px-3 flex items-center gap-2.5">
-					{/* Logo Icon */}
 					<div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-base">
 						C
 					</div>
@@ -32,14 +30,12 @@ export default function DashboardLayout({
 				<NavBar />
 			</aside>
 
-			<main className="flex flex-1 flex-col min-w-0">
-				{/* header */}
+			<main className="flex flex-1 flex-col min-w-0 overflow-hidden">
 				<header className="border-b border-slate-200 bg-white px-8 py-5 flex items-center justify-between shadow-xs">
 					<h2 className="text-xl font-bold text-slate-800">{title}</h2>
 					<LogoutButton />
 				</header>
 
-				{/* toolbar */}
 				<div className="bg-white border-b border-slate-100 px-8 py-4 flex items-center justify-between">
 					<p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
 						{description}

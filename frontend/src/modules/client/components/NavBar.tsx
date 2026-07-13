@@ -6,6 +6,7 @@ const links = [
 	{ href: '/admin/course', label: 'Khóa học' },
 	{ href: '/admin/category', label: 'Danh mục' },
 	{ href: '/admin/user_management', label: 'Quản lý người dùng' },
+	{ href: '/admin/assignment', label: 'Bài tập' },
 ];
 
 export default function NavBar() {
