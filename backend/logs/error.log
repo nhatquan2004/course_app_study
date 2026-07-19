@@ -9,3 +9,4 @@
 [2026-07-10 20:41:25] [ERROR]: Lỗi tạo người dùng: Tên đăng nhập này đã được sử dụng: phuc119
 [2026-07-10 20:42:00] [ERROR]: Lỗi tạo người dùng: Tên đăng nhập này đã được sử dụng: phuc119
 [2026-07-13 19:09:54] [ERROR]: Lỗi tạo người dùng: Tên đăng nhập này đã được sử dụng: phuc119
+[2026-07-19 16:14:51] [ERROR]: Không thể tạo chương Chapter validation failed: name: Cast to string failed for value "[ 'chương', '3:', 'javascript', 'cơ', 'bản' ]" (type Array) at path "name"

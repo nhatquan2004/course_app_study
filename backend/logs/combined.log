@@ -31,3 +31,4 @@
 [2026-07-19 10:17:41] [INFO]: Tạo người dùng thành công: bilun28013@gmail.com
 [2026-07-19 10:17:44] [INFO]: Email sent: <491c9155-12ce-201b-e7ba-8de139bb64ae@gmail.com>
 >>>>>>> Stashed changes
+[2026-07-19 16:14:51] [ERROR]: Không thể tạo chương Chapter validation failed: name: Cast to string failed for value "[ 'chương', '3:', 'javascript', 'cơ', 'bản' ]" (type Array) at path "name"
