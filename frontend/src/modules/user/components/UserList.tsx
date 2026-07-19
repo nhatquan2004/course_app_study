@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import UserItem from './UserItem';
+<<<<<<< Updated upstream:frontend/src/modules/user/UserList.tsx
 import AddUserForm from './AddUserForm';
 import type { User } from './types';
+=======
+import type { User } from '../types';
+>>>>>>> Stashed changes:frontend/src/modules/user/components/UserList.tsx
 import SearchBar from '@/common/components/SearchBar';
 
 type UserListProps = {
@@ -14,9 +18,17 @@ export default function UserList({ users }: UserListProps) {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
+<<<<<<< Updated upstream:frontend/src/modules/user/UserList.tsx
 	const filteredUsers = users.filter((u) => 
 		u.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
 		u.email.toLowerCase().includes(searchQuery.toLowerCase())
+=======
+	const filteredUsers = users.filter(
+		u =>
+			u.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			u.email.toLowerCase().includes(searchQuery.toLowerCase()),
+>>>>>>> Stashed changes:frontend/src/modules/user/components/UserList.tsx
 	);
 
 	return (
@@ -66,9 +78,7 @@ export default function UserList({ users }: UserListProps) {
 									</td>
 								</tr>
 							) : (
-								filteredUsers.map(user => (
-									<UserItem key={user._id} user={user} />
-								))
+								filteredUsers.map(user => <UserItem key={user._id} user={user} />)
 							)}
 						</tbody>
 					</table>

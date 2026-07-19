@@ -1,5 +1,6 @@
 import DashboardLayout from '@/modules/dashboard/DashboardLayout';
-import UserList from '@/modules/user/UserList';
+import AddUserForm from '@/modules/user/components/AddUserForm';
+import UserList from '@/modules/user/components/UserList';
 import { getUserList } from '@/services/userService';
 
 export default async function UserListPage() {

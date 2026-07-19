@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
-import { User } from './types';
-import { deleteUserAction } from './userActions';
+import { User } from '../types';
+import { deleteUserAction } from '../userActions';
 
 export default function UserItem({ user }: { user: User }) {
 	async function handleDeleteUser() {

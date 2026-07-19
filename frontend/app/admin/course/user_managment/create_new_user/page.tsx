@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:frontend/src/modules/user/AddUserForm.tsx
 'use client';
 
 import { useState } from 'react';
@@ -153,6 +154,17 @@ export default function AddUserForm({ onClose }: Props) {
 		}
 	}
 
+=======
+import AddUserForm from '@/modules/user/components/AddUserForm';
+import { redirect } from 'next/navigation';
+
+export const metadata = {
+	title: 'Thêm người dùng | Admin | Course App',
+	description: 'Tạo người dùng mới trong hệ thống quản lý Course App.',
+};
+
+export default function CreateUserPage() {
+>>>>>>> Stashed changes:frontend/app/admin/course/user_managment/create_new_user/page.tsx
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
 			<div className="w-full max-w-2xl rounded-2xl border border-slate-200/60 bg-white shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-150">
