@@ -2,8 +2,9 @@ const courseService = require('../../services/course');
 const Course = require('../../schemas/courseSchema');
 
 async function getCourses(req, res) {
-	const coursesList = await courseService.getCourses();
-	res.send(coursesList);
+	const courseList = await courseService.getCourses();
+
+	res.status(200).send(courseList);
 }
 
 async function updateCourse(req, res) {
@@ -17,8 +18,8 @@ async function updateCourse(req, res) {
 		coverImage,
 		categoryIds,
 	);
-	res.send({
-		status: 200,
+	res.status(200).send({
+		success: true,
 		message: 'Sửa khóa học thành công',
 		data: course,
 	});
@@ -35,8 +36,8 @@ async function createCourse(req, res) {
 		categoryIds,
 	);
 
-	res.send({
-		status: 200,
+	res.status(200).send({
+		success: true,
 		message: 'Thêm khóa học thành công',
 		data: course,
 	});
@@ -45,8 +46,8 @@ async function createCourse(req, res) {
 async function deleteCourse(req, res) {
 	await courseService.deleteCourse(req.params.id);
 
-	res.send({
-		status: 204,
+	res.status(204).send({
+		success: true,
 		message: 'Đã xóa khóa học',
 	});
 }

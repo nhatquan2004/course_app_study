@@ -45,7 +45,7 @@ async function createCourse(name, description, price, coverImage, categoryIds) {
 
 		return course;
 	} catch (err) {
-		console.log('Error: không thể tạo khóa học', err);
+		Logger.info('Error: không thể tạo khóa học', err);
 	}
 }
 
