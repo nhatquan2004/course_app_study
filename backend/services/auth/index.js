@@ -1,12 +1,14 @@
 const User = require('../../schemas/userSchemas');
 const bcrypt = require('bcryptjs');
-async function login(username, password) {
+
+async function login(email, password) {
 	try {
-		const user = await User.findOne({ username: username });
+		const user = await User.findOne({ email: email });
 
 		if (!user) {
 			return null;
 		}
+
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (isMatch) {
 			return user;

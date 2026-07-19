@@ -11,7 +11,6 @@ export async function registerAction(
 	formData: FormData,
 ) {
 	const fullName = formData.get('fullName') as string;
-	const username = formData.get('username') as string;
 	const email = formData.get('email') as string;
 	const password = formData.get('password') as string;
 	const confirmPassword = formData.get('confirmPassword') as string;
@@ -25,7 +24,6 @@ export async function registerAction(
 
 	const response = await registerUser({
 		fullName,
-		username,
 		email,
 		password,
 	});

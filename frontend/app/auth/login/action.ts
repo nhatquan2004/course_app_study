@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 export async function login(formData: FormData) {
-	const username = formData.get('username')?.toString() || '';
+	const email = formData.get('email')?.toString() || '';
 	const password = formData.get('password')?.toString() || '';
-	const response = await loginUser({ username, password });
+	const response = await loginUser({ email, password });
 
 	if (response && response.status === 200) {
 		const data = response.data;

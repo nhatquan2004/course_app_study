@@ -7,7 +7,7 @@ import { login } from '../../../../app/auth/login/action';
 export default function LoginClientPage() {
 	const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 	const [message] = useState('');
-	const [form, setForm] = useState({ username: '', password: '' });
+	const [form, setForm] = useState({ email: '', password: '' });
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const { name, value } = event.target;
@@ -24,7 +24,6 @@ export default function LoginClientPage() {
 		<div className="min-h-screen w-full bg-linear-to-tr from-slate-50 via-blue-50/20 to-slate-100 px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
 			<div className="w-full max-w-5xl mx-auto flex items-center justify-center">
 				<div className="grid w-full overflow-hidden rounded-4xl border border-slate-200/60 bg-white/70 shadow-[0_20px_50px_rgba(0,0,0,0.05)] backdrop-blur-md md:grid-cols-2">
-					{/* Left panel */}
 					<div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
 						<p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-blue-600">
 							Course App
@@ -33,12 +32,10 @@ export default function LoginClientPage() {
 							Đăng nhập
 						</h1>
 						<p className="mt-6 max-w-sm text-sm md:text-base leading-relaxed text-slate-500">
-							Đăng nhập để truy cập các khóa học, quản lý tài khoản và tiếp tục hành trình học tập
-							cùng Course App.
+							Đăng nhập để truy cập các khóa học, quản lý tài khoản và tiếp tục hành trình học tập cùng Course App.
 						</p>
 					</div>
 
-					{/* Right form panel */}
 					<div className="m-4 md:m-6 rounded-[28px] border border-slate-100 bg-slate-50/50 p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.02)] backdrop-blur-sm flex flex-col justify-center">
 						<div className="mb-6">
 							<p className="text-xs font-bold text-blue-600 uppercase tracking-wider">
@@ -48,18 +45,18 @@ export default function LoginClientPage() {
 								Đăng nhập vào tài khoản
 							</h2>
 							<p className="mt-2 text-xs text-slate-400">
-								Nhập tên đăng nhập và mật khẩu để tiếp tục.
+								Nhập địa chỉ email và mật khẩu để tiếp tục.
 							</p>
 						</div>
 
 						<form action={login} className="space-y-4">
 							<div>
 								<input
-									name="username"
-									type="text"
-									value={form.username}
+									name="email"
+									type="email"
+									value={form.email}
 									onChange={handleChange}
-									placeholder="Tên đăng nhập"
+									placeholder="Địa chỉ Email"
 									className={inputClassName}
 									required
 								/>

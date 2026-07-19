@@ -1,22 +1,20 @@
 import { API_BASE_URL } from '@/config/api';
-import { cookies } from 'next/headers';
 import instance from '@/common/interceptor';
 
 type RegisterPayload = {
 	fullName: string;
-	username: string;
 	email: string;
-	password: string;
+	password?: string;
+	role?: string;
 };
 
 type LoginPayload = {
-	username: string;
+	email: string;
 	password: string;
 };
 
 export async function getUserList() {
 	const res = await instance.get(`${API_BASE_URL}/user`);
-
 	return res.data;
 }
 

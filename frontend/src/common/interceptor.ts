@@ -33,6 +33,8 @@ instance.interceptors.response.use(
 
 			if (statusCode === 401) {
 				console.error('Bạn không có quyền truy cập trang này');
+			} else if (statusCode === 400 || statusCode === 409 || statusCode === 422) {
+				console.error(`Yêu cầu không hợp lệ (${statusCode}): ${errorMessage}`);
 			} else if (statusCode === 500) {
 				console.error('Lỗi kết nối với server');
 			} else {

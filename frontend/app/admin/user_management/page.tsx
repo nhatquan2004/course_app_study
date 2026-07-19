@@ -8,9 +8,7 @@ export default async function UserListPage() {
 	return (
 		<DashboardLayout
 			title="Người dùng"
-			description="Danh sách tất cả người dùng"
-			createHref="/admin/user_management/create_new_user"
-			createLabel="Thêm người dùng">
+			description="Danh sách tất cả người dùng">
 			<UserList users={users} />
 		</DashboardLayout>
 	);
