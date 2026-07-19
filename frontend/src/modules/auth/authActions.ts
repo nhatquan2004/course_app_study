@@ -38,10 +38,4 @@ export async function registerAction(
 	}
 
 	redirect('/auth/login');
-
-	// Alternatively, instead of redirect:
-	// return {
-	//     success: true,
-	//     message: response.message,
-	// };
 }

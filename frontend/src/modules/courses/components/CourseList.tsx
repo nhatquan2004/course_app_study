@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import CourseItem from './CourseItem';
-import EditCourseModal from './EditCourseModal';
 import type { Course } from '../types';
 import type { Category } from '@/modules/categories/types';
 import SearchBar from '@/common/components/SearchBar';
@@ -14,12 +13,12 @@ export default function CourseList({
 	courses: Course[];
 	categories: Category[];
 }) {
-	const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 	const [searchQuery, setSearchQuery] = useState('');
 
-	const filteredCourses = courses.filter((c) =>
-		c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-		(c.description && c.description.toLowerCase().includes(searchQuery.toLowerCase()))
+	const filteredCourses = courses.filter(
+		c =>
+			c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			(c.description && c.description.toLowerCase().includes(searchQuery.toLowerCase())),
 	);
 
 	return (
@@ -40,18 +39,10 @@ export default function CourseList({
 					</div>
 				) : (
 					filteredCourses.map(course => (
-						<CourseItem key={course._id} course={course} onEdit={setSelectedCourse} />
+						<CourseItem key={course._id} course={course} categories={categories} />
 					))
 				)}
 			</div>
-
-			{selectedCourse && (
-				<EditCourseModal
-					course={selectedCourse}
-					categories={categories}
-					onClose={() => setSelectedCourse(null)}
-				/>
-			)}
 		</div>
 	);
 }

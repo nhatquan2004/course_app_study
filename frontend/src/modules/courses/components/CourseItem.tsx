@@ -4,13 +4,18 @@ import type { Course } from '../types';
 import { deleteCourseAction } from '../actions/courseActions';
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import Modal from '@/common/components/Modal';
+import EditCourseModal from './EditCourseModal';
+import type { Category } from '@/modules/categories/types';
 
 type CourseItemProps = {
 	course: Course;
-	onEdit: (course: Course) => void;
+	categories: Category[];
 };
 
-export default function CourseItem({ course, onEdit }: CourseItemProps) {
+export default function CourseItem({ course, categories }: CourseItemProps) {
+	const router = useRouter();
 	const [openMenu, setOpenMenu] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -58,54 +63,52 @@ export default function CourseItem({ course, onEdit }: CourseItemProps) {
 					{course.price ? Number(course.price).toLocaleString('vi-VN') + ' VNĐ' : 'Miễn phí'}
 				</span>
 
-				{/* Menu Pop-up */}
-				<div className="relative" ref={menuRef}>
-					<button
-						type="button"
-						onClick={() => {
-							setOpenMenu(prev => !prev);
-						}}
-						className="rounded-lg p-2 hover:bg-slate-100 transition cursor-pointer">
-						{' '}
-						⋮
-					</button>
+				{/* Menu Pop-up with Modal context */}
+				<Modal>
+					<div className="relative" ref={menuRef}>
+						<button
+							type="button"
+							onClick={() => {
+								setOpenMenu(prev => !prev);
+							}}
+							className="rounded-lg p-2 hover:bg-slate-100 transition cursor-pointer">
+							{' '}
+							⋮
+						</button>
 
-					{openMenu && (
-						<div className="absolute right-0 mt-2 w-36 rounded-lg border border-slate-200 bg-white shadow-lg z-20">
-							<button
-								type="button"
-								onClick={() => {
-									onEdit(course);
-									setOpenMenu(false);
-								}}
-								className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">
-								Sửa
-							</button>
+						{openMenu && (
+							<div className="absolute right-0 mt-2 w-36 rounded-lg border border-slate-200 bg-white shadow-lg z-20">
+								<Modal.Open openWindowName="edit-course">
+									<button
+										type="button"
+										className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">
+										Sửa thông tin khóa
+									</button>
+								</Modal.Open>
 
-							<button
-								type="button"
-								onClick={handleDeleteCourse}
-								className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">
-								Xóa
-							</button>
-						</div>
-					)}
-				</div>
+								<button
+									type="button"
+									onClick={() => {
+										router.push(`/admin/course/${course._id}/edit_lessons`);
+									}}
+									className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">
+									Chỉnh sửa bài học
+								</button>
 
-				{/* <div className="flex gap-1.5">
-					<button
-						type="button"
-						onClick={() => onEdit(course)}
-						className="rounded-lg border border-slate-200 hover:bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-600 hover:text-slate-800 transition active:scale-95 cursor-pointer">
-						Sửa
-					</button>
-					<button
-						type="button"
-						onClick={async () => await deleteCourseAction(course._id)}
-						className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600 hover:text-red-700 transition active:scale-95 cursor-pointer">
-						Xóa
-					</button>
-				</div> */}
+								<button
+									type="button"
+									onClick={handleDeleteCourse}
+									className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">
+									Xóa
+								</button>
+							</div>
+						)}
+					</div>
+
+					<Modal.Window name="edit-course">
+						<EditCourseModal course={course} categories={categories} />
+					</Modal.Window>
+				</Modal>
 			</div>
 		</div>
 	);

@@ -14,7 +14,7 @@ async function login(username, password) {
 			return null;
 		}
 	} catch (err) {
-		console.log('Login unsuccessful', err);
+		logger.info('Login unsuccessful', err);
 	}
 }
 
