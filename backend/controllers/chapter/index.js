@@ -1,39 +1,71 @@
 const chapterService = require('../../services/chapter');
 
-async function getChapters(req, res) {
-	const courseId = req.params.courseId;
+async function getChapters(req, res, next) {
+	try {
+		const { courseId } = req.params;
 
-	const chapters = await chapterService.getChapters(courseId);
+		const chapters = await chapterService.getChapters(courseId);
 
-	res.status(200).send({
-		success: true,
-		message: 'Đã lấy được các chương',
-		data: chapters,
-	});
+		res.status(200).json({
+			success: true,
+			message: 'Đã lấy được các chương',
+			data: chapters,
+		});
+	} catch (err) {
+		next(err);
+	}
 }
 
-async function createChapter(req, res) {
-	const courseId = req.params.courseId;
-	const { name, totalDuration, totalLessons } = req.body;
+async function createChapter(req, res, next) {
+	try {
+		const { courseId } = req.params;
+		const { name, totalDuration, totalLessons } = req.body;
 
-	const chapter = await chapterService.createChapter(name, totalDuration, totalLessons, courseId);
+		if (!name?.trim()) {
+			return res.status(400).json({
+				success: false,
+				message: 'Không thể để trống tên chương',
+			});
+		}
 
-	res.status(200).send({
-		success: true,
-		message: 'Thêm chương thành công',
-		data: chapter,
-	});
+		const chapter = await chapterService.createChapter(
+			name
+				.trim()
+				.split(' ')
+				.map(word => word[0].toUpperCase() + word.slice(1))
+				.join(' '),
+			totalDuration,
+			totalLessons,
+			courseId,
+		);
+
+		res.status(201).json({
+			success: true,
+			message: 'Thêm chương thành công',
+			data: chapter,
+		});
+	} catch (err) {
+		next(err);
+	}
 }
 
-async function deleteChapter(req, res) {
-	const chapterId = req.params.chapterId;
+async function deleteChapter(req, res, next) {
+	try {
+		const { chapterId } = req.params;
 
-	await chapterService.deleteChapter(chapterId);
+		await chapterService.deleteChapter(chapterId);
 
-	res.status(204).send({
-		success: true,
-		message: 'Xóa chương thành công',
-	});
+		res.status(200).json({
+			success: true,
+			message: 'Xóa chương thành công',
+		});
+	} catch (err) {
+		next(err);
+	}
 }
 
-module.exports = { getChapters, createChapter, deleteChapter };
+module.exports = {
+	getChapters,
+	createChapter,
+	deleteChapter,
+};

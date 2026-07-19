@@ -26,7 +26,7 @@ async function getProfile(userId) {
 
 		return user;
 	} catch (err) {
-		console.log('Lỗi /me', err);
+		logger.info('Lỗi /me', err);
 	}
 }
 

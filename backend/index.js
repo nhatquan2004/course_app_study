@@ -9,7 +9,10 @@ const emailRoute = require('./routes/email');
 const app = express();
 const fetchDB = require('./database');
 const cors = require('cors');
+const errorHandler = require('./middlewares/errorHandler');
+
 const port = 3001;
+
 fetchDB();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +23,8 @@ app.use('/category', categoryRoute);
 app.use('/user', userRoute);
 app.use('/auth', authRoute);
 app.use('/email', emailRoute);
+
+app.use(errorHandler);
 
 app.get('/', (rep, res) => {
 	res.send('hello');

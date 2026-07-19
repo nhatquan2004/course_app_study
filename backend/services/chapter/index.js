@@ -1,10 +1,14 @@
 const Chapter = require('../../schemas/chapterSchema');
+const logger = require('../../utils/logger');
+const AppError = require('../../utils/AppError');
 
 async function getChapters(courseId) {
 	try {
-		const chapters = await Chapter.find({ courseId });
-		return chapters;
-	} catch (err) {}
+		return await Chapter.find({ courseId });
+	} catch (err) {
+		logger.error('Không lấy được danh sách chương', err);
+		throw err;
+	}
 }
 
 async function createChapter(name, totalDuration, totalLessons, courseId) {
@@ -19,16 +23,28 @@ async function createChapter(name, totalDuration, totalLessons, courseId) {
 
 		return chapter;
 	} catch (err) {
-		console.log('Không thể tạo chương mới');
+		logger.error('Không thể tạo chương', err);
+		throw err;
 	}
 }
 
 async function deleteChapter(chapterId) {
 	try {
-		await Chapter.findByIdAndDelete(chapterId);
+		const chapter = await Chapter.findByIdAndDelete(chapterId);
+
+		if (!chapter) {
+			throw new AppError('Không tìm thấy chương', 404);
+		}
+
+		return chapter;
 	} catch (err) {
-		console.log(err);
+		logger.error('Không xóa được chương', err);
+		throw err;
 	}
 }
 
-module.exports = { getChapters, createChapter, deleteChapter };
+module.exports = {
+	getChapters,
+	createChapter,
+	deleteChapter,
+};
