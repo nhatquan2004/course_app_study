@@ -16,7 +16,7 @@ async function me(req, res) {
 
 		return res.status(200).send({ user });
 	}
-	return res.send(500);
+	return res.sendStatus(500);
 }
 
 async function login(req, res) {

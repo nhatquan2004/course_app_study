@@ -1,5 +1,6 @@
 const User = require('../../schemas/userSchemas');
 const bcrypt = require('bcryptjs');
+const logger = require('../../utils/logger');
 
 async function login(email, password) {
 	try {

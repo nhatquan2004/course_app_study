@@ -58,10 +58,20 @@ export default function CourseItem({ course, categories }: CourseItemProps) {
 				</p>
 			</div>
 
-			<div className="flex items-center gap-4 shrink-0">
+			<div className="flex items-center gap-3 shrink-0">
 				<span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
 					{course.price ? Number(course.price).toLocaleString('vi-VN') + ' VNĐ' : 'Miễn phí'}
 				</span>
+
+				{course.status === 'published' ? (
+					<span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 ring-1 ring-inset ring-emerald-600/20 px-1.5 py-0.5 rounded-md">
+						Đã xuất bản
+					</span>
+				) : (
+					<span className="text-[10px] font-bold text-amber-700 bg-amber-50 ring-1 ring-inset ring-amber-600/20 px-1.5 py-0.5 rounded-md">
+						Nháp
+					</span>
+				)}
 
 				{/* Menu Pop-up with Modal context */}
 				<Modal>
@@ -89,10 +99,10 @@ export default function CourseItem({ course, categories }: CourseItemProps) {
 								<button
 									type="button"
 									onClick={() => {
-										router.push(`/admin/course/${course._id}/edit_lessons`);
+										router.push(`/admin/course/${course._id}/syllabus_management`);
 									}}
 									className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">
-									Chỉnh sửa bài học
+									Quản lý giáo trình
 								</button>
 
 								<button

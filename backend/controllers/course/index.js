@@ -1,5 +1,7 @@
 const courseService = require('../../services/course');
 const Course = require('../../schemas/courseSchema');
+const chapterService = require('../../services/chapter');
+const lessonService = require('../../services/lesson');
 
 async function getCourses(req, res) {
 	const courseList = await courseService.getCourses();
@@ -9,7 +11,7 @@ async function getCourses(req, res) {
 
 async function updateCourse(req, res) {
 	const { id } = req.params;
-	const { name, description, price, coverImage, categoryIds } = req.body;
+	const { name, description, price, coverImage, categoryIds, status } = req.body;
 	const course = await courseService.updateCourse(
 		id,
 		name,
@@ -17,6 +19,7 @@ async function updateCourse(req, res) {
 		price,
 		coverImage,
 		categoryIds,
+		status,
 	);
 	res.status(200).send({
 		success: true,
@@ -26,21 +29,43 @@ async function updateCourse(req, res) {
 }
 
 async function createCourse(req, res) {
-	const { name, description, price, coverImage, categoryIds } = req.body;
+	try {
+		const { name, description, price, coverImage, categoryIds } = req.body;
 
-	const course = await courseService.createCourse(
-		name,
-		description,
-		price,
-		coverImage,
-		categoryIds,
-	);
+		const course = await courseService.createCourse(
+			name,
+			description,
+			price,
+			coverImage,
+			categoryIds,
+		);
 
-	res.status(200).send({
-		success: true,
-		message: 'Thêm khóa học thành công',
-		data: course,
-	});
+		if (course) {
+			const chapter = await chapterService.createChapter(
+				'Chương 1: Giới thiệu khóa học',
+				0,
+				1,
+				course._id.toString()
+			);
+			if (chapter) {
+				await lessonService.createLesson(
+					'Bài học 1: Chào mừng bạn đến với khóa học',
+					0,
+					false,
+					chapter._id.toString(),
+					course._id.toString()
+				);
+			}
+		}
+
+		res.status(200).send({
+			success: true,
+			message: 'Thêm khóa học thành công',
+			data: course,
+		});
+	} catch (err) {
+		res.status(500).json({ success: false, message: err.message });
+	}
 }
 
 async function deleteCourse(req, res) {
@@ -52,9 +77,22 @@ async function deleteCourse(req, res) {
 	});
 }
 
+async function getCourse(req, res) {
+	try {
+		const course = await Course.findById(req.params.id);
+		if (!course) {
+			return res.status(404).json({ message: 'Không tìm thấy khóa học' });
+		}
+		res.status(200).send(course);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+}
+
 module.exports = {
 	getCourses,
 	createCourse,
 	deleteCourse,
 	updateCourse,
+	getCourse,
 };

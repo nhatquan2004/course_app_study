@@ -43,8 +43,28 @@ async function deleteChapter(chapterId) {
 	}
 }
 
+async function updateChapter(chapterId, name) {
+	try {
+		const chapter = await Chapter.findByIdAndUpdate(
+			chapterId,
+			{ name },
+			{ new: true }
+		);
+
+		if (!chapter) {
+			throw new AppError('Không tìm thấy chương', 404);
+		}
+
+		return chapter;
+	} catch (err) {
+		logger.error('Không thể cập nhật chương', err);
+		throw err;
+	}
+}
+
 module.exports = {
 	getChapters,
 	createChapter,
 	deleteChapter,
+	updateChapter,
 };
