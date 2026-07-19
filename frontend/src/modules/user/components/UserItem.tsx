@@ -4,8 +4,8 @@ import { deleteUserAction } from '../userActions';
 
 export default function UserItem({ user }: { user: User }) {
 	async function handleDeleteUser() {
-		const data = await deleteUserAction(user._id);
-		toast.success(data?.message);
+		const data = (await deleteUserAction(user._id)) as any;
+		toast.success(data?.message || 'Đã xóa người dùng');
 	}
 
 	return (
@@ -47,7 +47,7 @@ export default function UserItem({ user }: { user: User }) {
 					<button
 						type="button"
 						onClick={handleDeleteUser}
-						className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95">
+						className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95 cursor-pointer">
 						Xóa
 					</button>
 				</div>
