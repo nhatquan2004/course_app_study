@@ -20,4 +20,5 @@ router.delete(
 router.get('/:courseId/chapters', chapterController.getChapters);
 router.post('/:courseId/chapters', chapterController.createChapter);
 router.delete('/:courseId/chapters/:chapterId', chapterController.deleteChapter);
+
 module.exports = router;

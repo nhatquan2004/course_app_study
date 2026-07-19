@@ -89,10 +89,10 @@ export default function CourseItem({ course, categories }: CourseItemProps) {
 								<button
 									type="button"
 									onClick={() => {
-										router.push(`/admin/course/${course._id}/edit_lessons`);
+										router.push(`/admin/course/${course._id}/syllabus_management`);
 									}}
 									className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">
-									Chỉnh sửa bài học
+									Chỉnh sửa chương trình
 								</button>
 
 								<button
