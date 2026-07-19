@@ -6,23 +6,30 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	username: {
-		type: String,
-		required: true,
-	},
 	email: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	role: {
 		type: String,
 		enum: ['admin', 'user'],
-		default: 'admin',
+		default: 'user',
 		required: true,
 	},
 	password: {
 		type: String,
-		required: true,
+		required: false,
+	},
+	isVerified: {
+		type: Boolean,
+		default: false,
+	},
+	invitationToken: {
+		type: String,
+	},
+	invitationTokenExpires: {
+		type: Date,
 	},
 	createdAt: {
 		type: Date,

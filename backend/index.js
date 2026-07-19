@@ -4,6 +4,7 @@ const courseRoute = require('./routes/course');
 const categoryRoute = require('./routes/category');
 const userRoute = require('./routes/user');
 const authRoute = require('./routes/auth');
+const emailRoute = require('./routes/email');
 
 const app = express();
 const fetchDB = require('./database');
@@ -18,6 +19,7 @@ app.use('/courses', courseRoute);
 app.use('/category', categoryRoute);
 app.use('/user', userRoute);
 app.use('/auth', authRoute);
+app.use('/email', emailRoute);
 
 app.get('/', (rep, res) => {
 	res.send('hello');
