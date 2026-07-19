@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import UserItem from './UserItem';
-import AddUserForm from './AddUserForm';
 import type { User } from '../types';
 import SearchBar from '@/common/components/SearchBar';
 
@@ -14,9 +13,10 @@ export default function UserList({ users }: UserListProps) {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-	const filteredUsers = users.filter((u) => 
-		u.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-		u.email.toLowerCase().includes(searchQuery.toLowerCase())
+	const filteredUsers = users.filter(
+		u =>
+			u.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			u.email.toLowerCase().includes(searchQuery.toLowerCase()),
 	);
 
 	return (
@@ -31,8 +31,7 @@ export default function UserList({ users }: UserListProps) {
 				<button
 					type="button"
 					onClick={() => setIsAddModalOpen(true)}
-					className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-500/10 hover:shadow hover:shadow-blue-500/20 transition-all duration-200 active:scale-95 cursor-pointer"
-				>
+					className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-500/10 hover:shadow hover:shadow-blue-500/20 transition-all duration-200 active:scale-95 cursor-pointer">
 					<span>+</span> Thêm người dùng
 				</button>
 			</div>
