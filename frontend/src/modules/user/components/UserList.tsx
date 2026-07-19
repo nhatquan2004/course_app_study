@@ -4,6 +4,7 @@ import { useState } from 'react';
 import UserItem from './UserItem';
 import type { User } from '../types';
 import SearchBar from '@/common/components/SearchBar';
+import AddUserForm from './AddUserForm';
 
 type UserListProps = {
 	users: User[];
@@ -72,7 +73,7 @@ export default function UserList({ users }: UserListProps) {
 				</div>
 			</div>
 
-			{/* {isAddModalOpen && <AddUserForm onClose={() => setIsAddModalOpen(false)} />} */}
+			{isAddModalOpen && <AddUserForm onClose={() => setIsAddModalOpen(false)} />}
 		</div>
 	);
 }
