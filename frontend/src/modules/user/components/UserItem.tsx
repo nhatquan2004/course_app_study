@@ -11,7 +11,7 @@ export default function UserItem({ user }: { user: User }) {
 	return (
 		<tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
 			<td className="px-6 py-4">
-				<div className="flex items-center gap-3">
+				<div className="flex items-center gap-4">
 					<div className="h-10 w-10 rounded-full bg-linear-to-tr from-blue-500/10 to-indigo-500/10 flex items-center justify-center text-sm font-bold text-blue-600">
 						{user.fullName.charAt(0).toUpperCase()}
 					</div>

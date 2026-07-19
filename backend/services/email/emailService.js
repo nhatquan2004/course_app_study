@@ -5,11 +5,11 @@ async function sendEmail({ to, subject, html }) {
 	try {
 		const user = process.env.EMAIL_USER;
 		const pass = process.env.EMAIL_PASS;
-		console.log("user",user)
-		console.log("pass",pass)
 
 		if (!user || !pass) {
-			logger.warn(`EMAIL_USER or EMAIL_PASS not configured. Logging email instead: to=${to}, subject=${subject}`);
+			logger.warn(
+				`EMAIL_USER or EMAIL_PASS not configured. Logging email instead: to=${to}, subject=${subject}`,
+			);
 			return { success: true, logged: true };
 		}
 

@@ -20,7 +20,7 @@ export async function getUserList() {
 
 export async function deleteUser(id: string) {
 	const res = await instance.delete(`${API_BASE_URL}/user/${id}`);
-	return res;
+	return res.data;
 }
 
 export async function registerUser(userData: RegisterPayload) {
