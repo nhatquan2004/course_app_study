@@ -16,7 +16,8 @@ export default async function SyllabusManagementPage({ params }: Props) {
 	}
 
 	const chaptersRes = await getChaptersAction(courseId);
-	const initialChapters = chaptersRes?.success !== false && Array.isArray(chaptersRes.data) ? chaptersRes.data : [];
+	const initialChapters =
+		chaptersRes?.success !== false && Array.isArray(chaptersRes.data) ? chaptersRes.data : [];
 
 	return (
 		<div className="w-full">
