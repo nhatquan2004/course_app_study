@@ -5,6 +5,7 @@ export type Course = {
 	price: number;
 	coverImage?: string;
 	categoryIds?: string[];
+	status?: string;
 };
 
 export type CreateCoursePayload = {

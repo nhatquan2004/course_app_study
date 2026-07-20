@@ -13,3 +13,18 @@ export async function getCourses() {
 		throw err;
 	}
 }
+
+export async function getCourseById(id: string) {
+	try {
+		const res = await instance.get(`${COURSES_URL}/${id}`);
+		return res.data;
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+}
+
+export async function updateCourse(id: string, updateData: any) {
+	const res = await instance.patch(`${COURSES_URL}/${id}`, updateData);
+	return res.data;
+}

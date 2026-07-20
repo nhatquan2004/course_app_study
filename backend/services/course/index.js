@@ -10,17 +10,19 @@ async function getCourses() {
 	}
 }
 
-async function updateCourse(id, name, description, price, coverImage, categoryIds) {
+async function updateCourse(id, name, description, price, coverImage, categoryIds, status) {
 	try {
+		const updateData = {};
+		if (name !== undefined) updateData.name = name;
+		if (description !== undefined) updateData.description = description;
+		if (price !== undefined) updateData.price = price;
+		if (coverImage !== undefined) updateData.coverImage = coverImage;
+		if (categoryIds !== undefined) updateData.categoryIds = categoryIds;
+		if (status !== undefined) updateData.status = status;
+
 		const course = await Course.findByIdAndUpdate(
 			id,
-			{
-				name,
-				description,
-				price,
-				coverImage,
-				categoryIds,
-			},
+			updateData,
 			{
 				new: true,
 			},

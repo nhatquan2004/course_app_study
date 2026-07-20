@@ -7,6 +7,11 @@ const courseSchema = new Schema({
     price: Number,
     coverImage: String,
     categoryIds: [String],
+    status: {
+        type: String,
+        enum: ['draft', 'published'],
+        default: 'draft',
+    },
 });
 
 const Course = mongoose.model('Course', courseSchema);

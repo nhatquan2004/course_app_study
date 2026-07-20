@@ -10,12 +10,17 @@ const COURSES_URL = `${API_BASE_URL}/courses`;
 
 export async function createCourseAction(courseData: CreateCoursePayload) {
 	const res = await instance.post(COURSES_URL, courseData);
+	const course = res.data?.data;
+	const courseId = course?._id;
 
 	revalidatePath('/');
-	redirect('/');
+	revalidatePath('/admin/course');
 
-	// Unreachable because redirect() throws
-	// return res.data;
+	if (courseId) {
+		redirect(`/admin/course/${courseId}/syllabus_management`);
+	} else {
+		redirect('/admin/course');
+	}
 }
 
 export async function updateCourseAction(courseId: string, courseData: UpdateCoursePayload) {
