@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import { createCourseAction } from '@/modules/courses/actions/courseActions';
 import type { Category } from '@/modules/categories/types';
 
@@ -19,28 +20,28 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 		);
 	}
 
-	const labelClassName = 'block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1';
+	const labelClassName = 'block text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)] mb-1.5';
 	const inputClassName =
-		'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 shadow-xs';
+		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-3.5 py-2.5 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs';
 
 	return (
-		<div className="min-h-screen w-full bg-linear-to-tr from-slate-50 via-blue-50/10 to-slate-100 px-6 py-4 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
+		<div className="min-h-screen w-full bg-[var(--color-paper-2)] px-6 py-8 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-[var(--color-ink)] font-sans">
 			<div className="w-full max-w-2xl mx-auto">
 				{/* Main Card */}
-				<div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+				<div className="tactile-card overflow-hidden bg-white">
 					{/* Header */}
-					<div className="border-b border-slate-100 px-8 py-4.5 bg-slate-50/50">
-						<p className="text-[10px] font-bold uppercase tracking-widest text-blue-600">
+					<div className="border-b border-[var(--color-rule)] px-8 py-5.5 bg-[var(--color-paper-2)]/50">
+						<p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent-2)]">
 							Admin Area
 						</p>
-						<h1 className="mt-0.5 text-xl font-bold text-slate-900">Thêm khóa học mới</h1>
-						<p className="mt-1 text-xs text-slate-500">
+						<h1 className="mt-1 text-lg font-black text-[var(--color-ink)] tracking-tight">Thêm khóa học mới</h1>
+						<p className="mt-1.5 text-xs text-[var(--color-muted)] leading-relaxed">
 							Nhập đầy đủ thông tin chi tiết dưới đây để tạo và xuất bản khóa học mới trên hệ thống.
 						</p>
 					</div>
 
 					{/* Form Body */}
-					<form className="px-8 py-5 space-y-4">
+					<form className="px-8 py-6 space-y-4">
 						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 							{/* Tên khóa học - Full Width */}
 							<div className="md:col-span-2">
@@ -50,6 +51,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 									value={name}
 									onChange={e => setName(e.target.value)}
 									placeholder="Ví dụ: Lập trình Next.js nâng cao"
+									required
 								/>
 							</div>
 
@@ -95,7 +97,8 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 								{/* Selection Box / Trigger */}
 								<div
 									onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-									className="min-h-9.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-800 outline-none transition focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500/30 shadow-xs flex flex-wrap items-center gap-1.5 cursor-pointer select-none">
+									className="min-h-10 w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-3.5 py-1.5 text-xs text-[var(--color-ink)] outline-none transition focus-within:border-[var(--color-accent-2)] focus-within:ring-2 focus-within:ring-[var(--color-accent-2)]/20 shadow-2xs flex flex-wrap items-center gap-1.5 cursor-pointer select-none"
+								>
 									{selectedCategoryIds.length > 0 ? (
 										<div className="flex flex-wrap gap-1">
 											{selectedCategoryIds.map(id => {
@@ -104,7 +107,8 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 												return (
 													<span
 														key={cat._id}
-														className="inline-flex items-center gap-1 rounded-md bg-blue-50 pl-2 pr-1 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10">
+														className="inline-flex items-center gap-1 rounded-lg bg-[var(--color-accent-2)]/10 pl-2 pr-1.5 py-0.5 text-xs font-bold text-[var(--color-accent-2)] border border-[var(--color-accent-2)]/20"
+													>
 														{cat.categoryName}
 														<button
 															type="button"
@@ -112,7 +116,8 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 																e.stopPropagation();
 																handleCategoryToggle(cat._id);
 															}}
-															className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-800 transition">
+															className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full hover:bg-[var(--color-accent-2)]/20 transition"
+														>
 															✕
 														</button>
 													</span>
@@ -131,7 +136,7 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 
 								{/* Dropdown Options List */}
 								{isDropdownOpen && (
-									<div className="absolute z-10 w-full mt-1.5 rounded-lg border border-slate-200 bg-white shadow-lg max-h-36 overflow-y-auto p-1.5 space-y-1">
+									<div className="absolute z-10 w-full mt-1.5 rounded-xl border border-[var(--color-rule)] bg-white shadow-lg max-h-36 overflow-y-auto p-1.5 space-y-1">
 										{categories.map(cat => {
 											const isSelected = selectedCategoryIds.includes(cat._id);
 											return (
@@ -141,13 +146,14 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 														e.stopPropagation();
 														handleCategoryToggle(cat._id);
 													}}
-													className={`flex items-center justify-between px-3.5 py-2 text-xs rounded-md cursor-pointer select-none transition ${
+													className={`flex items-center justify-between px-3.5 py-2 text-xs rounded-lg cursor-pointer select-none transition ${
 														isSelected
-															? 'bg-blue-50/60 text-blue-700 font-semibold'
-															: 'text-slate-700 hover:bg-slate-50'
-													}`}>
+															? 'bg-[var(--color-accent-2)]/10 text-[var(--color-accent-2)] font-bold'
+															: 'text-slate-700 hover:bg-[var(--color-paper-2)]'
+													}`}
+												>
 													<span>{cat.categoryName}</span>
-													{isSelected && <span className="text-blue-600 font-bold">✓</span>}
+													{isSelected && <span className="text-[var(--color-accent-2)] font-bold">✓</span>}
 												</div>
 											);
 										})}
@@ -162,26 +168,38 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 						</div>
 
 						{/* Footer Actions */}
-						<div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
+						<div className="flex items-center justify-end gap-3.5 border-t border-[var(--color-rule)] pt-4">
 							<Link
 								href="/"
-								className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-[0.98]">
+								className="btn-push btn-push-soft text-xs"
+							>
 								Hủy
 							</Link>
 							<button
 								type="button"
-								className="rounded-lg bg-blue-600 hover:bg-blue-700 px-5 py-2 text-xs font-semibold text-white shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 active:scale-[0.98]"
+								className="btn-push btn-push-cyan text-xs"
 								onClick={async () => {
+									if (!name.trim()) {
+										toast.error('Vui lòng nhập tên khóa học');
+										return;
+									}
 									const courseData = {
 										name: name,
 										description: description,
-										price: Number(price),
+										price: Number(price) || 0,
 										coverImage: coverImage,
 										categoryIds: selectedCategoryIds,
 									};
-
-									await createCourseAction(courseData);
-								}}>
+									try {
+										await createCourseAction(courseData);
+									} catch (err: any) {
+										// Next.js redirect throws an error under the hood, let it pass if it's redirect
+										if (err.message !== 'NEXT_REDIRECT') {
+											toast.error('Lỗi khi tạo khóa học.');
+										}
+									}
+								}}
+							>
 								Tạo khóa học →
 							</button>
 						</div>

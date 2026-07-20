@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -13,7 +14,7 @@ export default function NavBar() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="flex flex-col gap-2">
+		<nav className="flex flex-col gap-2.5">
 			{links.map(link => {
 				const isActive = pathname === link.href;
 
@@ -21,11 +22,12 @@ export default function NavBar() {
 					<Link
 						key={link.href}
 						href={link.href}
-						className={`rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-200 ${
+						className={`rounded-xl px-4 py-3 text-left text-xs font-bold transition-all duration-200 transform ${
 							isActive
-								? 'bg-blue-50 text-blue-600 font-semibold'
-								: 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-						}`}>
+								? 'bg-[var(--color-accent)] text-[var(--color-ink)] shadow-xs translate-x-1'
+								: 'text-[var(--color-muted)] hover:bg-[var(--color-paper-2)] hover:text-[var(--color-ink)] hover:translate-x-1'
+						}`}
+					>
 						{link.label}
 					</Link>
 				);

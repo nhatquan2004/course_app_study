@@ -9,6 +9,7 @@ import {
 	createLesson,
 	deleteLesson,
 	updateLesson,
+	saveSyllabusBatch,
 } from '@/services/chapterService';
 import { getCourseById, updateCourse } from '@/services/courseService';
 import { revalidatePath } from 'next/cache';
@@ -117,6 +118,18 @@ export async function updateCourseStatusAction(courseId: string, status: 'draft'
 		return { success: true, data: res };
 	} catch (err: any) {
 		const errorMessage = err.response?.data?.message || err.message || 'Cập nhật trạng thái thất bại';
+		return { success: false, message: errorMessage };
+	}
+}
+
+export async function saveSyllabusBatchAction(courseId: string, chapters: any[]) {
+	try {
+		const res = await saveSyllabusBatch(courseId, chapters);
+		revalidatePath(`/admin/course/${courseId}/syllabus_management`);
+		revalidatePath('/admin/course');
+		return { success: true, data: res };
+	} catch (err: any) {
+		const errorMessage = err.response?.data?.message || err.message || 'Lưu giáo trình thất bại';
 		return { success: false, message: errorMessage };
 	}
 }

@@ -30,4 +30,7 @@ router.post('/:courseId/chapters/:chapterId/lessons', lessonController.createLes
 router.patch('/:courseId/chapters/:chapterId/lessons/:lessonId', lessonController.updateLesson);
 router.delete('/:courseId/chapters/:chapterId/lessons/:lessonId', lessonController.deleteLesson);
 
+//Giáo trình Batch
+router.post('/:courseId/syllabus/batch', courseController.saveBatchSyllabus);
+
 module.exports = router;

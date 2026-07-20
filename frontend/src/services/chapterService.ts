@@ -48,3 +48,8 @@ export async function updateLesson(courseId: string, chapterId: string, lessonId
 	const res = await instance.patch(`${API_BASE_URL}/courses/${courseId}/chapters/${chapterId}/lessons/${lessonId}`, updateData);
 	return res.data;
 }
+
+export async function saveSyllabusBatch(courseId: string, chapters: any[]) {
+	const res = await instance.post(`${API_BASE_URL}/courses/${courseId}/syllabus/batch`, { chapters });
+	return res.data;
+}

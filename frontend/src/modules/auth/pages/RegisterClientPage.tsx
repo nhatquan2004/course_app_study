@@ -11,31 +11,37 @@ export default function RegisterClientPage() {
 	});
 
 	const inputClassName =
-		'w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 shadow-sm';
+		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-4 py-3 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs';
 
 	return (
-		<div className="min-h-screen w-full bg-linear-to-tr from-slate-50 via-blue-50/20 to-slate-100 px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-slate-800">
-			<div className="w-full max-w-5xl mx-auto flex items-center justify-center">
-				<div className="grid w-full overflow-hidden rounded-4xl border border-slate-200/60 bg-white/70 shadow-[0_20px_50px_rgba(0,0,0,0.05)] backdrop-blur-md md:grid-cols-2">
-					<div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
-						<p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-blue-600">
+		<div className="min-h-screen w-full bg-[var(--color-paper-2)] px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-[var(--color-ink)] font-sans">
+			<div className="w-full max-w-4xl mx-auto flex items-center justify-center">
+				<div className="grid w-full overflow-hidden rounded-[24px] border border-[var(--color-rule)] bg-white shadow-lg md:grid-cols-2">
+					{/* Left Welcome Panel */}
+					<div className="flex flex-col justify-center p-8 md:p-12 lg:p-16 bg-[var(--color-paper-2)]/30 border-r border-[var(--color-rule)]">
+						<p className="mb-3 text-[10px] font-black uppercase tracking-[0.35em] text-[var(--color-accent-2)]">
 							Course App
 						</p>
-						<h1 className="text-4xl font-light tracking-tight md:text-5xl lg:text-6xl text-slate-900">
+						<h1 className="text-3xl font-black tracking-tight md:text-4xl lg:text-5xl text-[var(--color-ink)]">
 							Đăng ký
 						</h1>
-						<p className="mt-6 max-w-sm text-sm md:text-base leading-relaxed text-slate-500">
+						<p className="mt-5 max-w-xs text-xs leading-relaxed text-[var(--color-muted)] font-medium">
 							Đăng ký tài khoản để bắt đầu học các khóa học và khám phá những kiến thức mới cùng Course App.
 						</p>
 					</div>
 
-					<div className="m-4 md:m-6 rounded-[28px] border border-slate-100 bg-slate-50/50 p-8 lg:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.02)] backdrop-blur-sm flex flex-col justify-center">
+					{/* Right Form Panel */}
+					<div className="p-8 md:p-10 flex flex-col justify-center bg-white">
 						<div className="mb-6">
-							<p className="text-xs font-bold text-blue-600 uppercase tracking-wider">
+							<p className="text-[10px] font-black text-[var(--color-accent-2)] uppercase tracking-wider">
 								Chào mừng bạn
 							</p>
-							<h2 className="mt-1 text-2xl font-semibold text-slate-900">Tạo tài khoản mới</h2>
-							<p className="mt-2 text-xs text-slate-400">Nhập đầy đủ thông tin để đăng ký.</p>
+							<h2 className="mt-1 text-lg font-black text-[var(--color-ink)] tracking-tight">
+								Tạo tài khoản mới
+							</h2>
+							<p className="mt-1.5 text-xs text-[var(--color-muted)] font-medium">
+								Nhập đầy đủ thông tin để đăng ký tài khoản.
+							</p>
 						</div>
 
 						<form action={formAction} className="space-y-4">
@@ -67,9 +73,10 @@ export default function RegisterClientPage() {
 
 							{state.message && (
 								<p
-									className={`text-center text-sm ${
-										state.success ? 'text-green-600' : 'text-red-600'
-									}`}>
+									className={`text-center text-xs font-bold ${
+										state.success ? 'text-emerald-600' : 'text-rose-500'
+									}`}
+								>
 									{state.message}
 								</p>
 							)}
@@ -77,15 +84,17 @@ export default function RegisterClientPage() {
 							<button
 								type="submit"
 								disabled={pending}
-								className="mt-2 w-full rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 active:scale-[0.98]">
+								className="btn-push btn-push-cyan w-full text-xs py-3 mt-2"
+							>
 								{pending ? 'Đang đăng ký...' : 'Đăng ký'}
 							</button>
 
-							<p className="mt-4 text-center text-xs text-slate-400">
+							<p className="mt-4 text-center text-xs text-[var(--color-muted)] font-bold">
 								Đã có tài khoản?{' '}
 								<Link
 									href="/auth/login"
-									className="text-blue-600 hover:text-blue-700 font-semibold hover:underline">
+									className="text-[var(--color-accent-2)] hover:text-blue-700 font-bold hover:underline"
+								>
 									Đăng nhập ngay
 								</Link>
 							</p>

@@ -2,6 +2,8 @@ const courseService = require('../../services/course');
 const Course = require('../../schemas/courseSchema');
 const chapterService = require('../../services/chapter');
 const lessonService = require('../../services/lesson');
+const Chapter = require('../../schemas/chapterSchema');
+const Lesson = require('../../schemas/lessonSchema');
 
 async function getCourses(req, res) {
 	const courseList = await courseService.getCourses();
@@ -89,10 +91,77 @@ async function getCourse(req, res) {
 	}
 }
 
+async function saveBatchSyllabus(req, res) {
+	try {
+		const { courseId } = req.params;
+		const { chapters } = req.body;
+
+		if (!Array.isArray(chapters)) {
+			return res.status(400).json({ success: false, message: 'Danh sách chương học không hợp lệ' });
+		}
+
+		const savedChapterIds = [];
+		const savedLessonIds = [];
+
+		for (const ch of chapters) {
+			let chapterDbId;
+
+			if (ch._id && !ch._id.startsWith('temp_')) {
+				await Chapter.findByIdAndUpdate(ch._id, { name: ch.name });
+				chapterDbId = ch._id;
+			} else {
+				const newCh = await Chapter.create({
+					name: ch.name,
+					courseId,
+					totalDuration: 0,
+					totalLessons: 0,
+				});
+				chapterDbId = newCh._id.toString();
+			}
+			savedChapterIds.push(chapterDbId);
+
+			if (Array.isArray(ch.lessons)) {
+				for (const les of ch.lessons) {
+					let lessonDbId;
+					if (les._id && !les._id.startsWith('temp_')) {
+						await Lesson.findByIdAndUpdate(les._id, {
+							lessonName: les.lessonName,
+							isPreviewable: !!les.isPreviewable,
+							chapterId: chapterDbId,
+						});
+						lessonDbId = les._id;
+					} else {
+						const newLes = await Lesson.create({
+							lessonName: les.lessonName,
+							duration: 0,
+							isPreviewable: !!les.isPreviewable,
+							chapterId: chapterDbId,
+							courseId,
+						});
+						lessonDbId = newLes._id.toString();
+					}
+					savedLessonIds.push(lessonDbId);
+				}
+			}
+		}
+
+		await Chapter.deleteMany({ courseId, _id: { $nin: savedChapterIds } });
+		await Lesson.deleteMany({ courseId, _id: { $nin: savedLessonIds } });
+
+		res.status(200).json({
+			success: true,
+			message: 'Đồng bộ giáo trình thành công',
+		});
+	} catch (err) {
+		res.status(500).json({ success: false, message: err.message });
+	}
+}
+
 module.exports = {
 	getCourses,
 	createCourse,
 	deleteCourse,
 	updateCourse,
 	getCourse,
+	saveBatchSyllabus,
 };

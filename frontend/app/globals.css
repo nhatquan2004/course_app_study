@@ -1,26 +1,184 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Hum Theme Palette (Tactile playful learning school) */
+  --color-paper: oklch(97.2% 0.012 95);
+  --color-paper-2: oklch(94.5% 0.016 95);
+  --color-paper-3: oklch(91.5% 0.020 95);
+  --color-ink: oklch(20% 0.012 250);
+  --color-muted: oklch(45% 0.012 250);
+  --color-accent: oklch(86% 0.18 95); /* Pear-yellow primary */
+  --color-accent-deep: oklch(76% 0.20 95);
+  --color-accent-2: oklch(66% 0.18 235); /* Sky-cyan secondary */
+  --color-accent-3: oklch(68% 0.24 18); /* Coral-red pop */
+  --color-mint: oklch(80% 0.16 150); /* Success */
+  --color-mint-deep: oklch(65% 0.18 150);
+  --color-lavender: oklch(74% 0.16 305);
+  --color-rule: oklch(88% 0.01 95);
+  --color-focus: oklch(60% 0.20 235);
+
+  --radius-card: 20px;
+  --radius-input: 12px;
+  --radius-pill: 999px;
+  
+  background-color: var(--color-paper);
+  color: var(--color-ink);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Body settings */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Beautiful custom scrollbars matching the Hum aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-paper-3);
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-2);
+}
+
+/* Push-button design system matching Hum Theme Signature Move #1 */
+.btn-push {
+  --btn-face: var(--color-accent); 
+  --btn-ink: var(--color-ink);
+  --btn-edge: var(--color-accent-deep); 
+  --btn-cast: oklch(76% 0.20 95 / 0.25);
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 0.5em;
+  padding: 0.75rem 1.3rem; 
+  font-weight: 600; 
+  border: 0; 
+  border-radius: var(--radius-pill);
+  color: var(--btn-ink); 
+  background: var(--btn-face); 
+  cursor: pointer; 
+  position: relative; 
+  isolation: isolate;
+  box-shadow: 0 4px 0 0 var(--btn-edge), 0 6px 12px -3px var(--btn-cast);
+  transform: translateY(0);
+  transition: transform 140ms cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 140ms cubic-bezier(0.2, 0.7, 0.3, 1), background-color 160ms;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
+.btn-push:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 0 0 var(--btn-edge), 0 12px 22px -4px var(--btn-cast); 
+}
+
+.btn-push:active { 
+  transform: translateY(3px);  
+  box-shadow: 0 1px 0 0 var(--btn-edge), 0 2px 6px -2px var(--btn-cast); 
+  transition-duration: 70ms; 
+}
+
+.btn-push:focus-visible { 
+  outline: 3px solid color-mix(in oklch, var(--btn-edge) 70%, var(--color-focus)); 
+  outline-offset: 3px; 
+}
+
+.btn-push[disabled] { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+  pointer-events: none; 
+  transform: none; 
+  box-shadow: 0 4px 0 0 var(--btn-edge); 
+}
+
+/* Modifiers for push button */
+.btn-push-cyan {
+  --btn-face: var(--color-accent-2);
+  --btn-edge: oklch(56% 0.20 235);
+  --btn-cast: oklch(56% 0.20 235 / 0.25);
+  --btn-ink: #ffffff;
+}
+
+.btn-push-coral {
+  --btn-face: var(--color-accent-3);
+  --btn-edge: oklch(58% 0.24 18);
+  --btn-cast: oklch(58% 0.24 18 / 0.25);
+  --btn-ink: #ffffff;
+}
+
+.btn-push-mint {
+  --btn-face: var(--color-mint);
+  --btn-edge: var(--color-mint-deep);
+  --btn-cast: var(--color-mint-deep) / 0.25;
+  --btn-ink: var(--color-ink);
+}
+
+.btn-push-soft {
+  --btn-face: var(--color-paper-2);
+  --btn-edge: var(--color-paper-3);
+  --btn-cast: oklch(20% 0.012 250 / 0.05);
+  --btn-ink: var(--color-ink);
+}
+
+/* Star-burst micro-celebration animation on click */
+.star-burst {
+  position: absolute;
+  width: 24px; 
+  height: 24px;
+  background:
+    linear-gradient(90deg, transparent 47%, var(--color-accent-3) 47% 53%, transparent 53%),
+    linear-gradient(0deg,  transparent 47%, var(--color-accent-3) 47% 53%, transparent 53%);
+  animation: star-burst-anim 420ms ease-out forwards;
+  pointer-events: none;
+  z-index: 50;
+}
+
+@keyframes star-burst-anim {
+  0%   { transform: scale(0) rotate(0deg);   opacity: 1; }
+  60%  { transform: scale(1.2) rotate(35deg); opacity: 0.9; }
+  100% { transform: scale(1.4) rotate(45deg); opacity: 0; }
+}
+
+/* Tactile cream-card layouts */
+.tactile-card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 24px -12px oklch(20% 0.012 250 / 0.08);
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 220ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 220ms;
+}
+
+.tactile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -16px oklch(20% 0.012 250 / 0.14);
+  border-color: var(--color-accent-2);
+}
+
+/* Elegant Text Highlighting matching Hum Theme Signature Move #2 */
+em, .hl {
+  color: inherit;
+  background-image: linear-gradient(var(--color-accent) 0 0);
+  background-repeat: no-repeat;
+  background-size: 100% 0.32em;     /* scales with text size */
+  background-position: 0 82%;       /* sits below baseline */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;      /* wraps naturally */
+  padding-bottom: 0.02em;
 }
