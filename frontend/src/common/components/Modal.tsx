@@ -70,24 +70,23 @@ function Open({ children, openWindowName }: OpenProps) {
 }
 
 function Window({ children, name }: WindowProps) {
-	//chứa cửa sổ modal
 	const { modalWindowName, closeModalWindow } = useModalContext();
 
 	const ref = useOutsideClick<HTMLDivElement>(closeModalWindow);
 
 	if (name !== modalWindowName) return null;
 
-	//chèn component mới vào trong document.body
 	return createPortal(
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-			<div ref={ref} className="relative rounded-xl bg-white p-8 shadow-2xl transition-all">
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-ink)]/50 backdrop-blur-md px-4">
+			<div ref={ref} className="relative rounded-[24px] border border-[var(--color-rule)] bg-white p-8 shadow-2xl transition-all max-w-lg w-full">
 				<button
 					onClick={closeModalWindow}
-					className="absolute top-4 right-4 rounded-md p-1 transition-colors hover:bg-gray-100">
-					<HiXMark className="h-6 w-6 text-gray-500" />
+					style={{ right: '1.5rem', top: '1.25rem' }}
+					className="absolute btn-push btn-push-soft !p-1.5 !w-8 !h-8 text-[var(--color-muted)] flex items-center justify-center"
+				>
+					<HiXMark className="h-5 w-5" />
 				</button>
 
-				{/* Component được trả về sẽ nhận được prop onCloseModal, sử dụng cho nút "Hủy" */}
 				{cloneElement(children, {
 					onCloseModal: closeModalWindow,
 				})}

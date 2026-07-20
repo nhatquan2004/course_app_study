@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as XLSX from 'xlsx';
 import { createUserAction } from '../userActions';
+import { toast } from 'react-toastify';
+import { HiXMark } from 'react-icons/hi2';
 
 type ParsedUser = {
 	fullName: string;
@@ -97,6 +99,7 @@ export default function AddUserForm({ onClose }: Props) {
 			if (res.status === 200) {
 				setStatusType('success');
 				setStatusMessage('Đã tạo người dùng và gửi email mời kích hoạt!');
+				toast.success('Thành công!');
 				router.refresh();
 				setTimeout(() => {
 					onClose();
@@ -149,6 +152,7 @@ export default function AddUserForm({ onClose }: Props) {
 			setStatusMessage(
 				`Đã gửi lời mời thành công cho ${successCount} người dùng. Thất bại: ${failCount}`,
 			);
+			toast.success('Nhập file thành công!');
 			router.refresh();
 			setTimeout(() => {
 				onClose();
@@ -159,34 +163,43 @@ export default function AddUserForm({ onClose }: Props) {
 		}
 	}
 
+	const labelClassName = 'block text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)] mb-1.5';
+	const inputClassName =
+		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-3.5 py-2.5 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs';
+
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-			<div className="w-full max-w-2xl rounded-2xl border border-slate-200/60 bg-white shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-150 text-slate-800">
-				<div className="border-b border-slate-100 bg-slate-50/20 px-6 py-5 flex items-center justify-between">
-					<div>
-						<h2 className="text-lg font-bold text-slate-900">Thêm người dùng</h2>
-						<p className="mt-1 text-xs text-slate-500">
-							Mời thành viên tham gia hệ thống bằng Form nhập hoặc file Excel.
-						</p>
-					</div>
-					<button
-						onClick={onClose}
-						className="h-8 w-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition cursor-pointer">
-						✕
-					</button>
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-ink)]/50 backdrop-blur-md p-4">
+			<div className="w-full max-w-2xl rounded-[24px] border border-[var(--color-rule)] bg-white shadow-2xl overflow-hidden relative text-[var(--color-ink)] font-sans">
+				{/* Close button */}
+				<button
+					onClick={onClose}
+					style={{ right: '1.5rem', top: '1.25rem' }}
+					className="absolute btn-push btn-push-soft !p-1.5 !w-8 !h-8 text-[var(--color-muted)] flex items-center justify-center"
+				>
+					<HiXMark className="h-5 w-5" />
+				</button>
+
+				{/* Header */}
+				<div className="border-b border-[var(--color-rule)] bg-[var(--color-paper-2)]/40 px-8 py-5.5">
+					<h2 className="text-base font-black tracking-tight text-[var(--color-ink)] uppercase tracking-wider text-[var(--color-accent-2)]">Thêm người dùng</h2>
+					<p className="mt-1 text-xs text-[var(--color-muted)] font-medium">
+						Mời thành viên tham gia hệ thống bằng Form nhập hoặc file Excel.
+					</p>
 				</div>
 
-				<div className="flex border-b border-slate-100">
+				{/* Tabs Navigation */}
+				<div className="flex border-b border-[var(--color-rule)] bg-[var(--color-paper-2)]/30">
 					<button
 						type="button"
 						onClick={() => {
 							if (!isSubmitting) setActiveTab('form');
 						}}
-						className={`flex-1 py-3 text-center text-xs font-semibold transition-all cursor-pointer ${
+						className={`flex-1 py-3.5 text-center text-xs font-bold transition-all cursor-pointer ${
 							activeTab === 'form'
-								? 'border-b-2 border-blue-600 text-blue-600'
-								: 'text-slate-500 hover:text-slate-800'
-						}`}>
+								? 'border-b-2 border-[var(--color-accent-2)] text-[var(--color-accent-2)] bg-white'
+								: 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]/50'
+						}`}
+					>
 						Nhập Form thủ công
 					</button>
 					<button
@@ -194,57 +207,53 @@ export default function AddUserForm({ onClose }: Props) {
 						onClick={() => {
 							if (!isSubmitting) setActiveTab('file');
 						}}
-						className={`flex-1 py-3 text-center text-xs font-semibold transition-all cursor-pointer ${
+						className={`flex-1 py-3.5 text-center text-xs font-bold transition-all cursor-pointer ${
 							activeTab === 'file'
-								? 'border-b-2 border-blue-600 text-blue-600'
-								: 'text-slate-500 hover:text-slate-800'
-						}`}>
+								? 'border-b-2 border-[var(--color-accent-2)] text-[var(--color-accent-2)] bg-white'
+								: 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]/50'
+						}`}
+					>
 						Tải lên File Excel / CSV
 					</button>
 				</div>
 
 				{activeTab === 'form' ? (
-					<form onSubmit={handleFormSubmit} className="space-y-5 p-6">
+					<form onSubmit={handleFormSubmit} className="space-y-5 p-8 bg-white">
 						<div className="grid gap-4 md:grid-cols-2">
 							<div className="md:col-span-2">
-								<label className="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">
-									Họ và tên
-								</label>
+								<label className={labelClassName}>Họ và tên</label>
 								<input
 									type="text"
 									value={fullName}
 									onChange={e => setFullName(e.target.value)}
-									placeholder="Nguyễn Văn A"
-									className="w-full rounded-lg border border-slate-200 px-3.5 py-2 text-xs text-slate-800 outline-none transition focus:border-slate-400 focus:ring-1 focus:ring-slate-100"
+									placeholder="Ví dụ: Nguyễn Văn A"
+									className={inputClassName}
 									required
 									disabled={isSubmitting}
 								/>
 							</div>
 
 							<div>
-								<label className="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">
-									Email
-								</label>
+								<label className={labelClassName}>Email</label>
 								<input
 									type="email"
 									value={email}
 									onChange={e => setEmail(e.target.value)}
 									placeholder="example@email.com"
-									className="w-full rounded-lg border border-slate-200 px-3.5 py-2 text-xs text-slate-800 outline-none transition focus:border-slate-400 focus:ring-1 focus:ring-slate-100"
+									className={inputClassName}
 									required
 									disabled={isSubmitting}
 								/>
 							</div>
 
 							<div>
-								<label className="mb-1.5 block text-xs font-semibold text-slate-700 uppercase tracking-wider">
-									Vai trò
-								</label>
+								<label className={labelClassName}>Vai trò</label>
 								<select
 									value={role}
 									onChange={e => setRole(e.target.value)}
-									className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-800 outline-none transition focus:border-slate-400 cursor-pointer"
-									disabled={isSubmitting}>
+									className="w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-3.5 py-2.5 text-xs text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent-2)] cursor-pointer shadow-2xs"
+									disabled={isSubmitting}
+								>
 									<option value="user">User</option>
 									<option value="admin">Admin</option>
 								</select>
@@ -253,31 +262,34 @@ export default function AddUserForm({ onClose }: Props) {
 
 						{statusMessage && (
 							<p
-								className={`text-center text-xs font-semibold ${statusType === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+								className={`text-center text-xs font-bold ${statusType === 'success' ? 'text-emerald-600' : 'text-rose-500'}`}
+							>
 								{statusMessage}
 							</p>
 						)}
 
-						<div className="flex justify-end gap-3 border-t border-slate-100 pt-5 mt-4">
+						<div className="flex justify-end gap-3.5 border-t border-[var(--color-rule)] pt-5 mt-4">
 							<button
 								type="button"
 								onClick={onClose}
-								className="rounded-lg border border-slate-200 px-4.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-50 transition active:scale-95 cursor-pointer"
-								disabled={isSubmitting}>
+								className="btn-push btn-push-soft text-xs"
+								disabled={isSubmitting}
+							>
 								Hủy
 							</button>
 
 							<button
 								type="submit"
-								className="rounded-lg bg-blue-600 px-4.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 transition active:scale-95 cursor-pointer disabled:opacity-50"
-								disabled={isSubmitting}>
+								className="btn-push btn-push-cyan text-xs"
+								disabled={isSubmitting}
+							>
 								{isSubmitting ? 'Đang xử lý...' : 'Tạo người dùng'}
 							</button>
 						</div>
 					</form>
 				) : (
-					<div className="p-6 space-y-5">
-						<div className="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center bg-slate-50/50 hover:bg-slate-50 transition">
+					<div className="p-8 space-y-5 bg-white">
+						<div className="border-2 border-dashed border-[var(--color-rule)] rounded-[var(--radius-card)] p-8 text-center bg-[var(--color-paper-2)]/20 hover:bg-[var(--color-paper-2)]/40 transition">
 							<input
 								type="file"
 								accept=".xlsx, .xls, .csv"
@@ -288,47 +300,50 @@ export default function AddUserForm({ onClose }: Props) {
 							/>
 							<label
 								htmlFor="file-upload"
-								className="cursor-pointer flex flex-col items-center justify-center">
+								className="cursor-pointer flex flex-col items-center justify-center"
+							>
 								<svg
-									className="h-8 w-8 text-slate-400 mb-2"
+									className="h-8 w-8 text-[var(--color-accent-2)] mb-2"
 									fill="none"
 									stroke="currentColor"
-									strokeWidth="1.5"
-									viewBox="0 0 24 24">
+									strokeWidth="2"
+									viewBox="0 0 24 24"
+								>
 									<path
 										strokeLinecap="round"
 										strokeLinejoin="round"
 										d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
 									/>
 								</svg>
-								<span className="text-xs font-semibold text-slate-700">
+								<span className="text-xs font-bold text-[var(--color-ink)]">
 									Nhấp để tải lên tệp tin
 								</span>
-								<span className="text-[10px] text-slate-400 mt-1">
+								<span className="text-[10px] text-[var(--color-muted)] mt-1.5 font-bold">
 									Hỗ trợ định dạng .xlsx, .xls, .csv
 								</span>
 							</label>
 						</div>
 
 						{fileError && (
-							<p className="text-center text-xs font-medium text-red-500">{fileError}</p>
+							<p className="text-center text-xs font-bold text-rose-500">{fileError}</p>
 						)}
 
 						{parsedUsers.length > 0 && (
 							<div className="space-y-3">
-								<h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+								<h3 className="text-[10px] font-black text-[var(--color-muted)] uppercase tracking-wider">
 									Danh sách xem trước ({parsedUsers.length} người dùng)
 								</h3>
-								<div className="max-h-56 overflow-y-auto border border-slate-100 rounded-lg divide-y divide-slate-100">
+								<div className="max-h-52 overflow-y-auto border border-[var(--color-rule)] rounded-xl divide-y divide-[var(--color-rule)] bg-[var(--color-paper-2)]/20 shadow-2xs">
 									{parsedUsers.map((u, i) => (
 										<div
 											key={i}
-											className="flex justify-between items-center px-3.5 py-2.5 text-xs">
+											className="flex justify-between items-center px-4 py-3.5 text-xs"
+										>
 											<div>
-												<p className="font-semibold text-slate-800">{u.fullName}</p>
-												<p className="text-[10px] text-slate-400 mt-0.5">{u.email}</p>
+												<p className="font-bold text-[var(--color-ink)]">{u.fullName}</p>
+												<p className="text-[10px] text-[var(--color-muted)] mt-0.5 font-bold">{u.email}</p>
 											</div>
-											<span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600 uppercase">
+											<span className="inline-flex items-center rounded-lg bg-[var(--color-accent-2)]/10 border border-[var(--color-accent-2)]/20 px-2 py-0.5 text-[9px] font-black text-[var(--color-accent-2)] uppercase tracking-wider">
 												{u.role}
 											</span>
 										</div>
@@ -338,44 +353,48 @@ export default function AddUserForm({ onClose }: Props) {
 						)}
 
 						{isSubmitting && submitProgress.total > 0 && (
-							<div className="space-y-1.5">
-								<div className="flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+							<div className="space-y-2">
+								<div className="flex justify-between text-[10px] font-black text-[var(--color-muted)] uppercase tracking-wider">
 									<span>Đang xử lý gửi thư mời...</span>
 									<span>
 										{submitProgress.current} / {submitProgress.total}
 									</span>
 								</div>
-								<div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+								<div className="h-2 w-full bg-[var(--color-paper-2)] border border-[var(--color-rule)] rounded-full overflow-hidden">
 									<div
-										className="h-full bg-blue-600 transition-all duration-200"
+										className="h-full bg-[var(--color-accent-2)] transition-all duration-200"
 										style={{
 											width: `${(submitProgress.current / submitProgress.total) * 100}%`,
-										}}></div>
+										}}
+									></div>
 								</div>
 							</div>
 						)}
 
 						{statusMessage && (
 							<p
-								className={`text-center text-xs font-semibold ${statusType === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+								className={`text-center text-xs font-bold ${statusType === 'success' ? 'text-emerald-600' : 'text-rose-500'}`}
+							>
 								{statusMessage}
 							</p>
 						)}
 
-						<div className="flex justify-end gap-3 border-t border-slate-100 pt-5">
+						<div className="flex justify-end gap-3.5 border-t border-[var(--color-rule)] pt-5">
 							<button
 								type="button"
 								onClick={onClose}
-								className="rounded-lg border border-slate-200 px-4.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-50 transition active:scale-95 cursor-pointer"
-								disabled={isSubmitting}>
+								className="btn-push btn-push-soft text-xs"
+								disabled={isSubmitting}
+							>
 								Hủy
 							</button>
 
 							<button
 								type="button"
 								onClick={handleFileSubmit}
-								className="rounded-lg bg-blue-600 px-4.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 transition active:scale-95 cursor-pointer disabled:opacity-50"
-								disabled={parsedUsers.length === 0 || isSubmitting}>
+								className="btn-push btn-push-cyan text-xs"
+								disabled={parsedUsers.length === 0 || isSubmitting}
+							>
 								{isSubmitting ? 'Đang gửi mời...' : 'Gửi toàn bộ lời mời'}
 							</button>
 						</div>

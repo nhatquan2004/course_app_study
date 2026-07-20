@@ -14,7 +14,7 @@ export default function NavBar() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="flex flex-col gap-2.5">
+		<nav className="flex flex-col gap-3">
 			{links.map(link => {
 				const isActive = pathname === link.href;
 
@@ -22,10 +22,10 @@ export default function NavBar() {
 					<Link
 						key={link.href}
 						href={link.href}
-						className={`rounded-xl px-4 py-3 text-left text-xs font-bold transition-all duration-200 transform ${
+						className={`rounded-xl px-4 py-3 text-left text-xs font-black transition-all duration-150 border-2 select-none uppercase tracking-wider ${
 							isActive
-								? 'bg-[var(--color-accent)] text-[var(--color-ink)] shadow-xs translate-x-1'
-								: 'text-[var(--color-muted)] hover:bg-[var(--color-paper-2)] hover:text-[var(--color-ink)] hover:translate-x-1'
+								? 'bg-[var(--color-accent)] text-[var(--color-ink)] border-[var(--color-ink)] shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
+								: 'text-[var(--color-muted)] border-transparent hover:border-[var(--color-rule)] hover:bg-[var(--color-paper-2)]/60 hover:text-[var(--color-ink)]'
 						}`}
 					>
 						{link.label}

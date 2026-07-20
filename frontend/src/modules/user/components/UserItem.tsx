@@ -4,50 +4,62 @@ import { deleteUserAction } from '../userActions';
 
 export default function UserItem({ user }: { user: User }) {
 	async function handleDeleteUser() {
-		const data = (await deleteUserAction(user._id)) as any;
-		toast.success(data?.message || 'Đã xóa người dùng');
+		if (!confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.fullName}" không?`)) return;
+		try {
+			const data = (await deleteUserAction(user._id)) as any;
+			if (data && data.success !== false) {
+				toast.success(data?.message || 'Đã xóa người dùng');
+			} else {
+				toast.error(data?.message || 'Xóa người dùng thất bại');
+			}
+		} catch (err) {
+			toast.error('Lỗi kết nối mạng.');
+		}
 	}
 
 	return (
-		<tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-			<td className="px-6 py-4">
-				<div className="flex items-center gap-4">
-					<div className="h-10 w-10 rounded-full bg-linear-to-tr from-blue-500/10 to-indigo-500/10 flex items-center justify-center text-sm font-bold text-blue-600">
+		<tr className="hover:bg-[var(--color-paper-2)]/20 transition-colors">
+			<td className="px-6 py-4.5 whitespace-nowrap">
+				<div className="flex items-center gap-3">
+					<div className="h-9 w-9 rounded-xl bg-[var(--color-accent)] border border-[var(--color-accent-deep)] flex items-center justify-center text-xs font-black text-[var(--color-ink)] shrink-0 shadow-2xs">
 						{user.fullName.charAt(0).toUpperCase()}
 					</div>
-					<span className="font-semibold text-slate-900">{user.fullName}</span>
+					<span className="font-bold text-xs text-[var(--color-ink)] leading-snug">{user.fullName}</span>
 				</div>
 			</td>
 
-			<td className="px-6 py-4">
-				<span
-					className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-bold uppercase tracking-wider ${
-						user.role === 'admin'
-							? 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-700/10'
-							: 'bg-slate-50 text-slate-600 ring-1 ring-inset ring-slate-500/10'
-					}`}>
-					{user.role}
-				</span>
+			<td className="px-6 py-4.5 whitespace-nowrap">
+				{user.role === 'admin' ? (
+					<span className="inline-flex items-center rounded-lg bg-[var(--color-accent-2)]/10 px-2 py-0.5 text-[9px] font-black text-[var(--color-accent-2)] border border-[var(--color-accent-2)]/20 uppercase tracking-wider">
+						admin
+					</span>
+				) : (
+					<span className="inline-flex items-center rounded-lg bg-[var(--color-paper-2)] px-2 py-0.5 text-[9px] font-black text-[var(--color-muted)] border border-[var(--color-rule)] uppercase tracking-wider">
+						user
+					</span>
+				)}
 			</td>
 
-			<td className="px-6 py-4 text-slate-600">{user.email}</td>
+			<td className="px-6 py-4.5 text-xs font-bold text-[var(--color-muted)] whitespace-nowrap">{user.email}</td>
 
-			<td className="px-6 py-4 text-slate-500">
+			<td className="px-6 py-4.5 text-xs font-bold text-[var(--color-muted)] whitespace-nowrap">
 				{new Date(user.createdAt).toLocaleDateString('vi-VN')}
 			</td>
 
-			<td className="px-6 py-4">
+			<td className="px-6 py-4.5 text-right pr-8 whitespace-nowrap">
 				<div className="flex justify-end gap-2">
 					<button
 						type="button"
-						className="rounded-lg border border-slate-200 hover:bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-800 transition active:scale-95 cursor-pointer">
+						className="btn-push btn-push-soft !py-1.5 !px-3 text-[11px]"
+					>
 						Sửa
 					</button>
 
 					<button
 						type="button"
 						onClick={handleDeleteUser}
-						className="rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition active:scale-95 cursor-pointer">
+						className="btn-push btn-push-coral !py-1.5 !px-3 text-[11px]"
+					>
 						Xóa
 					</button>
 				</div>

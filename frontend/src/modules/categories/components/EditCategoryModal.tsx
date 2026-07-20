@@ -1,67 +1,93 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { Category } from "../types";
-import { updateCategoryAction } from "../actions/categoryActions";
+import { useState } from 'react';
+import type { Category } from '../types';
+import { updateCategoryAction } from '../actions/categoryActions';
+import { HiXMark } from 'react-icons/hi2';
 
 type Props = {
-  category: Category;
-  onClose: () => void;
+	category: Category;
+	onClose: () => void;
 };
 
 export default function EditCategoryModal({ category, onClose }: Props) {
-  const [categoryName, setCategoryName] = useState(category.categoryName);
-  const [message, setMessage] = useState("");
+	const [categoryName, setCategoryName] = useState(category.categoryName);
+	const [message, setMessage] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-  return (
-    <form
-      action={async () => {
-        setMessage("");
-        try {
-          await updateCategoryAction(category._id, { categoryName });
-          onClose();
-        } catch (err: unknown) {
-          const error = err as { response?: { data?: { message?: string } } };
-          setMessage(error.response?.data?.message || "Có lỗi xảy ra khi sửa.");
-        }
-      }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs"
-    >
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 text-slate-800 shadow-2xl relative border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
-        <h2 className="mb-5 text-lg font-bold text-slate-900">Sửa danh mục</h2>
+	async function handleSubmit(e: React.FormEvent) {
+		e.preventDefault();
+		if (!categoryName.trim() || isSubmitting) return;
 
-        <div className="flex flex-col gap-4">
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Tên danh mục</label>
-            <input
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
-              placeholder="Nhập tên danh mục..."
-              required
-              className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-100 transition shadow-xs"
-            />
-          </div>
+		setIsSubmitting(true);
+		setMessage('');
+		try {
+			await updateCategoryAction(category._id, { categoryName: categoryName.trim() });
+			onClose();
+		} catch (err: unknown) {
+			const error = err as { response?: { data?: { message?: string } } };
+			setMessage(error.response?.data?.message || 'Có lỗi xảy ra khi sửa.');
+		} finally {
+			setIsSubmitting(false);
+		}
+	}
 
-          {message && <p className="text-xs text-red-500 font-medium text-center">{message}</p>}
-        </div>
+	const labelClassName = 'block text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)] mb-1.5';
+	const inputClassName =
+		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-3.5 py-2.5 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs';
 
-        <div className="mt-6 flex justify-end gap-2 border-t pt-4 border-slate-100">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-95 cursor-pointer"
-          >
-            Hủy
-          </button>
+	return (
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-ink)]/50 backdrop-blur-md p-4">
+			<div className="w-full max-w-md rounded-[24px] bg-white p-7 shadow-2xl border border-[var(--color-rule)] relative text-[var(--color-ink)] font-sans">
+				{/* Close button with explicit positioning */}
+				<button
+					type="button"
+					onClick={onClose}
+					style={{ right: '1.5rem', top: '1.25rem' }}
+					className="absolute btn-push btn-push-soft !p-1.5 !w-8 !h-8 text-[var(--color-muted)] flex items-center justify-center"
+				>
+					<HiXMark className="h-5 w-5" />
+				</button>
 
-          <button
-            type="submit"
-            className="rounded-lg bg-blue-600 px-5 py-2 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm shadow-blue-500/10 hover:shadow active:scale-95 cursor-pointer"
-          >
-            Lưu thay đổi
-          </button>
-        </div>
-      </div>
-    </form>
-  );
+				<h2 className="mb-6 text-base font-black tracking-tight text-[var(--color-ink)] uppercase tracking-wider text-[var(--color-accent-2)]">
+					Sửa danh mục
+				</h2>
+
+				<form onSubmit={handleSubmit} className="space-y-5">
+					<div>
+						<label className={labelClassName}>Tên danh mục</label>
+						<input
+							value={categoryName}
+							onChange={(e) => setCategoryName(e.target.value)}
+							placeholder="Nhập tên danh mục..."
+							required
+							className={inputClassName}
+							disabled={isSubmitting}
+						/>
+					</div>
+
+					{message && <p className="text-xs text-rose-500 font-bold text-center">{message}</p>}
+
+					<div className="mt-6 flex justify-end gap-3 border-t border-[var(--color-rule)] pt-4">
+						<button
+							type="button"
+							onClick={onClose}
+							className="btn-push btn-push-soft text-xs"
+							disabled={isSubmitting}
+						>
+							Hủy
+						</button>
+
+						<button
+							type="submit"
+							className="btn-push btn-push-cyan text-xs"
+							disabled={isSubmitting}
+						>
+							{isSubmitting ? 'Đang lưu...' : 'Lưu thay đổi'}
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
 }

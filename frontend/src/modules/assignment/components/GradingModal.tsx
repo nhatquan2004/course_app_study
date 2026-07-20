@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { Submission } from '../types';
+import { HiXMark } from 'react-icons/hi2';
 
 type Props = {
 	submission: Submission;
@@ -13,6 +14,8 @@ export default function GradingModal({ submission, onClose, onSave }: Props) {
 	const [score, setScore] = useState(submission.score ? String(submission.score) : '');
 	const [feedback, setFeedback] = useState(submission.feedback || '');
 	const [error, setError] = useState('');
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	function handleAction(status: 'active' | 'inactive') {
 		setError('');
@@ -33,53 +36,66 @@ export default function GradingModal({ submission, onClose, onSave }: Props) {
 			return;
 		}
 
-		onSave(submission._id, numericScore, feedback, status);
-		onClose();
+		setIsSubmitting(true);
+		try {
+			onSave(submission._id, numericScore, feedback, status);
+			onClose();
+		} catch (err) {
+			setError('Lỗi khi chấm bài.');
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 
+	const labelClassName = 'block text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)] mb-1.5';
+	const inputClassName =
+		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-3.5 py-2.5 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs';
+
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs">
-			<div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
-				<div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-ink)]/50 backdrop-blur-md p-4">
+			<div className="w-full max-w-lg rounded-[24px] bg-white p-7 shadow-2xl border border-[var(--color-rule)] relative text-[var(--color-ink)] font-sans">
+				{/* Close button with explicit positioning */}
+				<button
+					onClick={onClose}
+					style={{ right: '1.5rem', top: '1.25rem' }}
+					className="absolute btn-push btn-push-soft !p-1.5 !w-8 !h-8 text-[var(--color-muted)] flex items-center justify-center"
+				>
+					<HiXMark className="h-5 w-5" />
+				</button>
+
+				{/* Header */}
+				<div className="flex items-center justify-between border-b border-[var(--color-rule)] pb-4 mb-4">
 					<div>
-						<h2 className="text-lg font-bold text-slate-900">Chi tiết bài làm</h2>
-						<p className="text-xs text-slate-400 mt-0.5">
-							Học viên: {submission.student.fullName}
+						<h2 className="text-base font-black tracking-tight text-[var(--color-ink)] uppercase tracking-wider text-[var(--color-accent-2)]">Chi tiết bài làm</h2>
+						<p className="text-xs text-[var(--color-muted)] mt-1 font-bold">
+							Học viên: <span className="text-[var(--color-ink)] font-black">{submission.student.fullName}</span>
 						</p>
 					</div>
-					<button
-						onClick={onClose}
-						className="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-50 rounded-lg transition"
-					>
-						✕
-					</button>
 				</div>
 
-				<div className="space-y-3.5 mb-5 text-sm">
-					<div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+				<div className="space-y-4 mb-5">
+					<div className="grid grid-cols-2 gap-4 bg-[var(--color-paper-2)]/40 p-4 rounded-xl border border-[var(--color-rule)]">
 						<div>
-							<p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Khóa học</p>
-							<p className="font-semibold text-slate-800 mt-0.5">{submission.course.name}</p>
+							<p className={labelClassName}>Khóa học</p>
+							<p className="font-bold text-slate-800 text-[11px] leading-snug">{submission.course.name}</p>
 						</div>
 						<div>
-							<p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bài tập</p>
-							<p className="font-semibold text-slate-800 mt-0.5">{submission.assignmentName}</p>
+							<p className={labelClassName}>Bài tập</p>
+							<p className="font-bold text-slate-800 text-[11px] leading-snug">{submission.assignmentName}</p>
 						</div>
 					</div>
 
 					<div>
-						<p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Nội dung bài nộp</p>
-						<div className="bg-white rounded-lg border border-slate-200 p-3 text-slate-700 max-h-32 overflow-y-auto leading-relaxed text-xs">
+						<p className={labelClassName}>Nội dung bài nộp</p>
+						<div className="bg-[var(--color-paper-2)]/25 rounded-xl border border-[var(--color-rule)] p-4 text-[var(--color-ink)] max-h-32 overflow-y-auto leading-relaxed text-xs font-medium shadow-2xs">
 							[Bài làm tự luận] Kính gửi giáo viên, em đã hoàn thành bài tập Homework 4 về viết đoạn văn Sentence Building. Em gửi giáo viên xem và chấm điểm nhận xét giúp em. Em cảm ơn.
 						</div>
 					</div>
 				</div>
 
-				<div className="space-y-4 border-t border-slate-100 pt-4">
+				<div className="space-y-4 border-t border-[var(--color-rule)] pt-4">
 					<div>
-						<label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-							Điểm số (Thang điểm 10)
-						</label>
+						<label className={labelClassName}>Điểm số (Thang điểm 10)</label>
 						<input
 							type="number"
 							value={score}
@@ -88,50 +104,51 @@ export default function GradingModal({ submission, onClose, onSave }: Props) {
 							min="0"
 							max="10"
 							step="0.1"
-							className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-100 transition shadow-xs"
+							className={inputClassName}
+							disabled={isSubmitting}
 						/>
 					</div>
 
 					<div>
-						<label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-							Nhận xét / Feedback
-						</label>
+						<label className={labelClassName}>Nhận xét / Feedback</label>
 						<textarea
 							rows={3}
 							value={feedback}
 							onChange={(e) => setFeedback(e.target.value)}
-							placeholder="Nhập nhận xét chi tiết, chỉ ra các lỗi sai..."
-							className="w-full rounded-lg border border-slate-200 px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-100 transition shadow-xs resize-none"
+							placeholder="Nhập ý kiến đánh giá học viên..."
+							className={`${inputClassName} resize-none`}
+							disabled={isSubmitting}
 						/>
 					</div>
 
-					{error && <p className="text-xs text-red-500 text-center font-medium">{error}</p>}
-				</div>
+					{error && <p className="text-center text-xs font-bold text-rose-500">{error}</p>}
 
-				<div className="mt-6 flex justify-end gap-2 border-t border-slate-100 pt-4">
-					<button
-						type="button"
-						onClick={onClose}
-						className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition active:scale-95"
-					>
-						Đóng
-					</button>
-
-					<button
-						type="button"
-						onClick={() => handleAction('inactive')}
-						className="rounded-lg border border-red-200 bg-red-50/50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 transition active:scale-95"
-					>
-						Trả lại bài
-					</button>
-
-					<button
-						type="button"
-						onClick={() => handleAction('active')}
-						className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition shadow-sm shadow-blue-500/10 active:scale-95"
-					>
-						Duyệt & Đạt
-					</button>
+					<div className="flex justify-end gap-2.5 pt-2">
+						<button
+							type="button"
+							onClick={onClose}
+							className="btn-push btn-push-soft text-xs"
+							disabled={isSubmitting}
+						>
+							Đóng
+						</button>
+						<button
+							type="button"
+							onClick={() => handleAction('inactive')}
+							className="btn-push btn-push-coral text-xs"
+							disabled={isSubmitting}
+						>
+							Trả lại bài
+						</button>
+						<button
+							type="button"
+							onClick={() => handleAction('active')}
+							className="btn-push btn-push-cyan text-xs"
+							disabled={isSubmitting}
+						>
+							Duyệt & Chấm điểm
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

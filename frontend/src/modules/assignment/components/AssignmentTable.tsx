@@ -46,12 +46,12 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 
 	function formatDateTime(dateStr: string) {
 		const date = new Date(dateStr);
-		const timePart = date.toLocaleTimeString('en-US', {
+		const timePart = date.toLocaleTimeString('vi-VN', {
 			hour: '2-digit',
 			minute: '2-digit',
 			hour12: false,
 		});
-		const datePart = date.toLocaleDateString('en-US', {
+		const datePart = date.toLocaleDateString('vi-VN', {
 			month: 'short',
 			day: '2-digit',
 			year: 'numeric',
@@ -121,34 +121,38 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 		return matchesSearch && matchesProgram && matchesTeacher && matchesCourse && matchesType && matchesDate && matchesStatus;
 	});
 
+	const selectClassName =
+		'rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white py-2 px-3.5 text-xs font-bold text-[var(--color-ink)] outline-none focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs transition cursor-pointer';
+
 	return (
-		<div className="w-full bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-xs">
-			<div className="p-6 border-b border-slate-100 bg-slate-50/20 flex flex-wrap gap-4 items-center">
+		<div className="w-full flex flex-col gap-4">
+			{/* Filters toolbar */}
+			<div className="flex flex-wrap gap-3 items-center">
 				<SearchBar
 					value={searchQuery}
 					onChange={setSearchQuery}
-					placeholder="Search by student or assignment"
+					placeholder="Tìm học viên hoặc bài nộp..."
 					className="w-full md:w-64"
 				/>
 
 				<select
 					value={programFilter}
 					onChange={(e) => setProgramFilter(e.target.value)}
-					className="rounded-lg border border-slate-200 bg-white py-2 px-3 text-xs font-semibold text-slate-600 outline-none focus:border-slate-400 transition cursor-pointer"
+					className={selectClassName}
 				>
-					<option value="All">Program: All</option>
-					<option value="IELTS">Program: IELTS</option>
+					<option value="All">Chương trình: Tất cả</option>
+					<option value="IELTS">Chương trình: IELTS</option>
 				</select>
 
 				<select
 					value={teacherFilter}
 					onChange={(e) => setTeacherFilter(e.target.value)}
-					className="rounded-lg border border-slate-200 bg-white py-2 px-3 text-xs font-semibold text-slate-600 outline-none focus:border-slate-400 transition cursor-pointer"
+					className={selectClassName}
 				>
-					<option value="All">Teacher: All</option>
+					<option value="All">Giáo viên: Tất cả</option>
 					{teachers.map((name) => (
 						<option key={name} value={name}>
-							Teacher: {name}
+							Giáo viên: {name}
 						</option>
 					))}
 				</select>
@@ -156,12 +160,12 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 				<select
 					value={courseFilter}
 					onChange={(e) => setCourseFilter(e.target.value)}
-					className="rounded-lg border border-slate-200 bg-white py-2 px-3 text-xs font-semibold text-slate-600 outline-none focus:border-slate-400 transition cursor-pointer"
+					className={selectClassName}
 				>
-					<option value="All">Course: All</option>
+					<option value="All">Khóa học: Tất cả</option>
 					{courses.map((name) => (
 						<option key={name} value={name}>
-							Course: {name}
+							{name}
 						</option>
 					))}
 				</select>
@@ -169,165 +173,168 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 				<select
 					value={typeFilter}
 					onChange={(e) => setTypeFilter(e.target.value)}
-					className="rounded-lg border border-slate-200 bg-white py-2 px-3 text-xs font-semibold text-slate-600 outline-none focus:border-slate-400 transition cursor-pointer"
+					className={selectClassName}
 				>
-					<option value="All">Type: All</option>
-					<option value="Writing">Type: Writing</option>
-					<option value="Speaking">Type: Speaking</option>
+					<option value="All">Dạng bài: Tất cả</option>
+					<option value="Writing">Dạng bài: Writing</option>
+					<option value="Speaking">Dạng bài: Speaking</option>
 				</select>
 
 				<select
 					value={dateFilter}
 					onChange={(e) => setDateFilter(e.target.value)}
-					className="rounded-lg border border-slate-200 bg-white py-2 px-3 text-xs font-semibold text-slate-600 outline-none focus:border-slate-400 transition cursor-pointer"
+					className={selectClassName}
 				>
-					<option value="All">Ngày TA nộp: All time</option>
-					<option value="Today">Ngày TA nộp: Hôm nay</option>
-					<option value="Week">Ngày TA nộp: Tuần này</option>
+					<option value="All">Ngày nộp: Tất cả</option>
+					<option value="Today">Ngày nộp: Hôm nay</option>
+					<option value="Week">Ngày nộp: Tuần này</option>
 				</select>
 
 				<select
 					value={statusFilter}
 					onChange={(e) => setStatusFilter(e.target.value)}
-					className="rounded-lg border border-slate-200 bg-white py-2 px-3 text-xs font-semibold text-slate-600 outline-none focus:border-slate-400 transition cursor-pointer"
+					className={selectClassName}
 				>
-					<option value="All">Trạng thái: Tất cả</option>
+					<option value="All">Trạng thái chấm: Tất cả</option>
 					<option value="pending">Trạng thái: Chờ duyệt</option>
 					<option value="active">Trạng thái: Đã chấm</option>
 					<option value="inactive">Trạng thái: Bị trả lại</option>
 				</select>
 			</div>
 
-			<div className="w-full overflow-x-auto">
-				<table className="w-full border-collapse text-left text-sm text-slate-700 min-w-[1450px]">
-					<thead className="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold uppercase tracking-wider text-slate-400/90">
-						<tr>
-							<th className="px-6 py-4.5 whitespace-nowrap">Học viên</th>
-							<th className="px-6 py-4.5 whitespace-nowrap">Khóa học</th>
-							<th className="px-6 py-4.5 whitespace-nowrap">GV được assign</th>
-							<th className="px-6 py-4.5 whitespace-nowrap">Bài tập</th>
-							<th className="px-6 py-4.5 text-center whitespace-nowrap">Trạng thái chấm</th>
-							<th className="px-6 py-4.5 whitespace-nowrap">Ngày chấm xong</th>
-							<th className="px-6 py-4.5 whitespace-nowrap">Người chấm</th>
-							<th className="px-6 py-4.5 text-center whitespace-nowrap">Điểm số</th>
-							<th className="px-6 py-4.5 text-right pr-8 whitespace-nowrap">Hành động</th>
-						</tr>
-					</thead>
-					<tbody className="divide-y divide-slate-100">
-						{filteredSubmissions.length === 0 ? (
+			{/* Submissions table card */}
+			<div className="tactile-card overflow-hidden bg-white border border-[var(--color-rule)]">
+				<div className="w-full overflow-x-auto">
+					<table className="w-full border-collapse text-left text-xs text-[var(--color-ink)] min-w-[1450px]">
+						<thead className="bg-[var(--color-paper-2)]/60 border-b border-[var(--color-rule)] text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
 							<tr>
-								<td colSpan={9} className="px-6 py-16 text-center text-slate-400 font-medium whitespace-nowrap">
-									Không tìm thấy bài làm nào khớp với bộ lọc.
-								</td>
+								<th className="px-6 py-4.5 whitespace-nowrap">Học viên</th>
+								<th className="px-6 py-4.5 whitespace-nowrap">Khóa học</th>
+								<th className="px-6 py-4.5 whitespace-nowrap">GV được assign</th>
+								<th className="px-6 py-4.5 whitespace-nowrap">Bài tập</th>
+								<th className="px-6 py-4.5 text-center whitespace-nowrap">Trạng thái chấm</th>
+								<th className="px-6 py-4.5 whitespace-nowrap">Thời gian xử lý</th>
+								<th className="px-6 py-4.5 whitespace-nowrap">Người chấm</th>
+								<th className="px-6 py-4.5 text-center whitespace-nowrap">Điểm số</th>
+								<th className="px-6 py-4.5 text-right pr-8 whitespace-nowrap">Hành động</th>
 							</tr>
-						) : (
-							filteredSubmissions.map((sub) => (
-								<tr key={sub._id} className="hover:bg-slate-50/20 transition-colors duration-150">
-									<td className="px-6 py-5 whitespace-nowrap">
-										<div>
-											<p className="font-semibold text-slate-800 text-sm leading-snug">{sub.student.fullName}</p>
-											<p className="text-xs text-slate-400 mt-1">{sub.student.email}</p>
-										</div>
-									</td>
-
-									<td className="px-6 py-5 whitespace-nowrap">
-										<div>
-											<p className="font-semibold text-slate-700 text-xs leading-normal">{sub.course.name}</p>
-											<span className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold bg-slate-100 text-slate-500 mt-1.5">
-												{sub.course.status}
-											</span>
-										</div>
-									</td>
-
-									<td className="px-6 py-5 whitespace-nowrap">
-										<div className="flex items-center gap-2.5">
-											<div className="h-7 w-7 rounded-full bg-blue-50/80 flex items-center justify-center text-[10px] font-bold text-blue-600 shrink-0">
-												{sub.tutor.fullName.charAt(0).toUpperCase()}
-											</div>
-											<div className="min-w-0">
-												<p className="font-medium text-slate-700 text-xs truncate">{sub.tutor.fullName}</p>
-												<p className="text-[10px] text-slate-400 mt-0.5 truncate">{sub.tutor.email}</p>
-											</div>
-										</div>
-									</td>
-
-									<td className="px-6 py-5 whitespace-nowrap">
-										<p className="font-medium text-slate-800 text-xs leading-relaxed">{sub.assignmentName}</p>
-									</td>
-
-									<td className="px-6 py-5 text-center whitespace-nowrap">
-										{sub.status === 'pending' && (
-											<span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 border border-amber-100/50">
-												● Chờ duyệt
-											</span>
-										)}
-										{sub.status === 'active' && (
-											<span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 border border-emerald-100/50">
-												● Đã chấm
-											</span>
-										)}
-										{sub.status === 'inactive' && (
-											<span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700 border border-rose-100/50">
-												● Bị trả lại
-											</span>
-										)}
-									</td>
-
-									<td className="px-6 py-5 whitespace-nowrap">
-										{sub.status !== 'pending' && sub.gradedAt ? (
-											<div className="flex flex-col gap-0.5">
-												<p className="font-bold text-slate-700 text-xs">
-													{formatTurnaroundTime(sub.submittedAt, sub.gradedAt)}
-												</p>
-												<p className="text-[10px] text-slate-400">
-													{formatDateTime(sub.gradedAt)}
-												</p>
-											</div>
-										) : (
-											<span className="text-slate-300 font-medium">-</span>
-										)}
-									</td>
-
-									<td className="px-6 py-5 whitespace-nowrap">
-										{sub.status !== 'pending' && sub.grader ? (
-											<div className="flex items-center gap-2.5">
-												<div className="h-7 w-7 rounded-full bg-indigo-50/80 flex items-center justify-center text-[10px] font-bold text-indigo-600 shrink-0">
-													{sub.grader.fullName.charAt(0).toUpperCase()}
-												</div>
-												<div className="min-w-0">
-													<p className="font-semibold text-slate-700 text-xs truncate">{sub.grader.fullName}</p>
-													<p className="text-[10px] text-slate-400 mt-0.5 truncate">{sub.grader.email}</p>
-												</div>
-											</div>
-										) : (
-											<span className="text-slate-300 font-medium">-</span>
-										)}
-									</td>
-
-									<td className="px-6 py-5 text-center whitespace-nowrap">
-										{sub.score !== undefined ? (
-											<span className="font-bold text-slate-950 bg-slate-100 px-2.5 py-1 rounded-md text-xs whitespace-nowrap">
-												{sub.score} / 10
-											</span>
-										) : (
-											<span className="text-slate-300">-</span>
-										)}
-									</td>
-
-									<td className="px-6 py-5 text-right pr-8 whitespace-nowrap">
-										<button
-											type="button"
-											onClick={() => setSelectedSubmission(sub)}
-											className="rounded-lg border border-slate-200 bg-white hover:bg-slate-50 px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 shadow-2xs hover:border-slate-300 hover:shadow-xs transition duration-150 active:scale-95 cursor-pointer"
-										>
-											Xem bài
-										</button>
+						</thead>
+						<tbody className="divide-y divide-[var(--color-rule)]/60 bg-white">
+							{filteredSubmissions.length === 0 ? (
+								<tr>
+									<td colSpan={9} className="px-6 py-16 text-center text-[var(--color-muted)] font-bold italic whitespace-nowrap">
+										Không tìm thấy bài làm nào khớp với bộ lọc.
 									</td>
 								</tr>
-							))
-						)}
-					</tbody>
-				</table>
+							) : (
+								filteredSubmissions.map((sub) => (
+									<tr key={sub._id} className="hover:bg-[var(--color-paper-2)]/20 transition-colors">
+										<td className="px-6 py-5 whitespace-nowrap">
+											<div>
+												<p className="font-bold text-[var(--color-ink)] text-xs leading-snug">{sub.student.fullName}</p>
+												<p className="text-[10px] text-[var(--color-muted)] mt-1 font-bold">{sub.student.email}</p>
+											</div>
+										</td>
+
+										<td className="px-6 py-5 whitespace-nowrap">
+											<div>
+												<p className="font-bold text-[var(--color-ink)] text-[11px] leading-normal">{sub.course.name}</p>
+												<span className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] font-black bg-[var(--color-paper-2)] text-[var(--color-muted)] border border-[var(--color-rule)] mt-1.5 uppercase tracking-wider">
+													{sub.course.status}
+												</span>
+											</div>
+										</td>
+
+										<td className="px-6 py-5 whitespace-nowrap">
+											<div className="flex items-center gap-2.5">
+												<div className="h-8 w-8 rounded-xl bg-[var(--color-accent)] border border-[var(--color-accent-deep)] flex items-center justify-center text-[10px] font-black text-[var(--color-ink)] shrink-0 shadow-2xs">
+													{sub.tutor.fullName.charAt(0).toUpperCase()}
+												</div>
+												<div className="min-w-0">
+													<p className="font-bold text-[var(--color-ink)] text-xs truncate">{sub.tutor.fullName}</p>
+													<p className="text-[10px] text-[var(--color-muted)] mt-0.5 truncate font-bold">{sub.tutor.email}</p>
+												</div>
+											</div>
+										</td>
+
+										<td className="px-6 py-5 whitespace-nowrap">
+											<p className="font-bold text-[var(--color-ink)] text-xs leading-relaxed max-w-sm truncate">{sub.assignmentName}</p>
+										</td>
+
+										<td className="px-6 py-5 text-center whitespace-nowrap">
+											{sub.status === 'pending' && (
+												<span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 text-amber-800 border border-amber-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+													● Chờ duyệt
+												</span>
+											)}
+											{sub.status === 'active' && (
+												<span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-mint)]/35 text-emerald-800 border border-emerald-600/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+													● Đã chấm
+												</span>
+											)}
+											{sub.status === 'inactive' && (
+												<span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-3)]/15 text-rose-800 border border-[var(--color-accent-3)]/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+													● Bị trả lại
+												</span>
+											)}
+										</td>
+
+										<td className="px-6 py-5 whitespace-nowrap">
+											{sub.status !== 'pending' && sub.gradedAt ? (
+												<div className="flex flex-col gap-0.5">
+													<p className="font-black text-[var(--color-ink)] text-xs">
+														{formatTurnaroundTime(sub.submittedAt, sub.gradedAt)}
+													</p>
+													<p className="text-[10px] text-[var(--color-muted)] font-bold">
+														{formatDateTime(sub.gradedAt)}
+													</p>
+												</div>
+											) : (
+												<span className="text-slate-300 font-medium">-</span>
+											)}
+										</td>
+
+										<td className="px-6 py-5 whitespace-nowrap">
+											{sub.status !== 'pending' && sub.grader ? (
+												<div className="flex items-center gap-2.5">
+													<div className="h-8 w-8 rounded-xl bg-[var(--color-accent-2)]/10 border border-[var(--color-accent-2)]/20 flex items-center justify-center text-[10px] font-black text-[var(--color-accent-2)] shrink-0 shadow-2xs">
+														{sub.grader.fullName.charAt(0).toUpperCase()}
+													</div>
+													<div className="min-w-0">
+														<p className="font-bold text-[var(--color-ink)] text-xs truncate">{sub.grader.fullName}</p>
+														<p className="text-[10px] text-[var(--color-muted)] mt-0.5 truncate font-bold">{sub.grader.email}</p>
+													</div>
+												</div>
+											) : (
+												<span className="text-slate-300 font-medium">-</span>
+											)}
+										</td>
+
+										<td className="px-6 py-5 text-center whitespace-nowrap">
+											{sub.score !== undefined ? (
+												<span className="font-black text-[var(--color-ink)] bg-[var(--color-paper-2)] border border-[var(--color-rule)] px-2.5 py-1 rounded-lg text-xs font-mono">
+													{sub.score} / 10
+												</span>
+											) : (
+												<span className="text-slate-300">-</span>
+											)}
+										</td>
+
+										<td className="px-6 py-5 text-right pr-8 whitespace-nowrap">
+											<button
+												type="button"
+												onClick={() => setSelectedSubmission(sub)}
+												className="btn-push btn-push-soft !py-1.5 !px-3.5 text-xs"
+											>
+												Xem bài
+											</button>
+										</td>
+									</tr>
+								))
+							)}
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			{selectedSubmission && (

@@ -22,46 +22,49 @@ export default function UserList({ users }: UserListProps) {
 
 	return (
 		<div className="w-full flex flex-col gap-4">
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between items-center gap-4">
 				<SearchBar
 					value={searchQuery}
 					onChange={setSearchQuery}
-					placeholder="Search users..."
+					placeholder="Tìm kiếm người dùng..."
 					className="w-full md:w-80"
 				/>
 				<button
 					type="button"
 					onClick={() => setIsAddModalOpen(true)}
-					className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-500/10 hover:shadow hover:shadow-blue-500/20 transition-all duration-200 active:scale-95 cursor-pointer">
+					className="btn-push btn-push-cyan text-xs shrink-0"
+				>
 					<span>+</span> Thêm người dùng
 				</button>
 			</div>
 
-			<div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+			<div className="tactile-card overflow-hidden bg-white border border-[var(--color-rule)]">
 				<div className="overflow-x-auto">
-					<table className="min-w-full">
-						<thead className="bg-slate-50 border-b border-slate-200">
+					<table className="min-w-full border-collapse">
+						<thead className="bg-[var(--color-paper-2)]/60 border-b border-[var(--color-rule)]">
 							<tr>
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-									Name
+								<th className="px-6 py-4.5 text-left text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+									Họ và tên
 								</th>
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-									Role
+								<th className="px-6 py-4.5 text-left text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+									Vai trò
 								</th>
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+								<th className="px-6 py-4.5 text-left text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
 									Email
 								</th>
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-									Joined
+								<th className="px-6 py-4.5 text-left text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+									Ngày tham gia
 								</th>
-								<th className="px-6 py-4"></th>
+								<th className="px-6 py-4.5 text-right pr-8 text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+									Hành động
+								</th>
 							</tr>
 						</thead>
 
-						<tbody className="divide-y divide-slate-100">
+						<tbody className="divide-y divide-[var(--color-rule)]/60 bg-white">
 							{filteredUsers.length === 0 ? (
 								<tr>
-									<td colSpan={5} className="px-6 py-12 text-center text-slate-400 text-sm">
+									<td colSpan={5} className="px-6 py-12 text-center text-[var(--color-muted)] text-xs italic">
 										Không tìm thấy người dùng nào.
 									</td>
 								</tr>
