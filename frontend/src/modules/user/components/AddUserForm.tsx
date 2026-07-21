@@ -194,11 +194,10 @@ export default function AddUserForm({ onClose }: Props) {
 						onClick={() => {
 							if (!isSubmitting) setActiveTab('form');
 						}}
-						className={`flex-1 py-3.5 text-center text-xs font-bold transition-all cursor-pointer ${
-							activeTab === 'form'
+						className={`flex-1 py-3.5 text-center text-xs font-bold transition-all cursor-pointer ${activeTab === 'form'
 								? 'border-b-2 border-[var(--color-accent-2)] text-[var(--color-accent-2)] bg-white'
 								: 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]/50'
-						}`}
+							}`}
 					>
 						Nhập Form thủ công
 					</button>
@@ -207,11 +206,10 @@ export default function AddUserForm({ onClose }: Props) {
 						onClick={() => {
 							if (!isSubmitting) setActiveTab('file');
 						}}
-						className={`flex-1 py-3.5 text-center text-xs font-bold transition-all cursor-pointer ${
-							activeTab === 'file'
+						className={`flex-1 py-3.5 text-center text-xs font-bold transition-all cursor-pointer ${activeTab === 'file'
 								? 'border-b-2 border-[var(--color-accent-2)] text-[var(--color-accent-2)] bg-white'
 								: 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]/50'
-						}`}
+							}`}
 					>
 						Tải lên File Excel / CSV
 					</button>

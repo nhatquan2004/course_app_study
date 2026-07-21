@@ -146,11 +146,10 @@ export default function CreateCourseAdminPage({ categories }: { categories: Cate
 														e.stopPropagation();
 														handleCategoryToggle(cat._id);
 													}}
-													className={`flex items-center justify-between px-3.5 py-2 text-xs rounded-lg cursor-pointer select-none transition ${
-														isSelected
+													className={`flex items-center justify-between px-3.5 py-2 text-xs rounded-lg cursor-pointer select-none transition ${isSelected
 															? 'bg-[var(--color-accent-2)]/10 text-[var(--color-accent-2)] font-bold'
 															: 'text-slate-700 hover:bg-[var(--color-paper-2)]'
-													}`}
+														}`}
 												>
 													<span>{cat.categoryName}</span>
 													{isSelected && <span className="text-[var(--color-accent-2)] font-bold">✓</span>}

@@ -18,33 +18,33 @@ export default function LoginClientPage() {
 	}
 
 	const inputClassName =
-		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-4 py-3 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs';
+		'w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-4 py-3.5 text-xs text-[var(--color-ink)] outline-none transition placeholder:text-slate-400 focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/15 shadow-3xs';
 
 	return (
-		<div className="min-h-screen w-full bg-[var(--color-paper-2)] px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-[var(--color-ink)] font-sans">
+		<div className="min-h-screen w-full bg-[var(--color-paper)] px-6 py-6 md:py-0 md:h-screen md:overflow-hidden flex items-center justify-center text-[var(--color-ink)] font-sans">
 			<div className="w-full max-w-4xl mx-auto flex items-center justify-center">
-				<div className="grid w-full overflow-hidden rounded-[24px] border border-[var(--color-rule)] bg-white shadow-lg md:grid-cols-2">
+				<div className="grid w-full overflow-hidden rounded-[20px] border border-[var(--color-rule)] bg-white shadow-md md:grid-cols-2">
 					{/* Left Welcome Panel */}
-					<div className="flex flex-col justify-center p-8 md:p-12 lg:p-16 bg-[var(--color-paper-2)]/30 border-r border-[var(--color-rule)]">
-						<p className="mb-3 text-[10px] font-black uppercase tracking-[0.35em] text-[var(--color-accent-2)]">
-							Course App
+					<div className="flex flex-col justify-center p-8 md:p-12 lg:p-16 bg-[var(--color-paper-2)] border-r border-[var(--color-rule)]">
+						<p className="mb-2 text-[9px] font-bold font-mono uppercase tracking-[0.25em] text-[var(--color-accent)]">
+							COURSE PLATFORM
 						</p>
-						<h1 className="text-3xl font-black tracking-tight md:text-4xl lg:text-5xl text-[var(--color-ink)]">
-							Đăng nhập
+						<h1 className="text-3xl font-extrabold tracking-tight text-[var(--color-ink)] leading-tight">
+							Plan, learn, and grow from one premium app.
 						</h1>
-						<p className="mt-5 max-w-xs text-xs leading-relaxed text-[var(--color-muted)] font-medium">
-							Đăng nhập để truy cập các khóa học, quản lý tài khoản và tiếp tục hành trình học tập cùng Course App.
+						<p className="mt-4 max-w-xs text-xs leading-relaxed text-[var(--color-muted)] font-medium">
+							Đăng nhập để tiếp cận hệ thống đào tạo chất lượng cao, quản lý lộ trình học tập và kết nối cùng giảng viên.
 						</p>
 					</div>
 
 					{/* Right Form Panel */}
 					<div className="p-8 md:p-10 flex flex-col justify-center bg-white">
 						<div className="mb-6">
-							<p className="text-[10px] font-black text-[var(--color-accent-2)] uppercase tracking-wider">
-								Chào mừng trở lại
+							<p className="text-[9px] font-bold font-mono text-[var(--color-muted)] uppercase tracking-widest">
+								LOGIN / CREDENTIALS
 							</p>
-							<h2 className="mt-1 text-lg font-black text-[var(--color-ink)] tracking-tight">
-								Đăng nhập vào tài khoản
+							<h2 className="mt-1 text-lg font-extrabold text-[var(--color-ink)] tracking-tight">
+								Đăng nhập tài khoản
 							</h2>
 							<p className="mt-1.5 text-xs text-[var(--color-muted)] font-medium">
 								Nhập địa chỉ email và mật khẩu để tiếp tục.
@@ -58,7 +58,7 @@ export default function LoginClientPage() {
 									type="email"
 									value={form.email}
 									onChange={handleChange}
-									placeholder="Địa chỉ Email"
+									placeholder="Địa chỉ email"
 									className={inputClassName}
 									required
 								/>
@@ -77,17 +77,17 @@ export default function LoginClientPage() {
 								<button
 									type="button"
 									onClick={() => setIsVisiblePassword(!isVisiblePassword)}
-									className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-muted)] hover:text-[var(--color-accent-2)] transition"
+									className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[var(--color-muted)] hover:text-[var(--color-accent)] transition uppercase tracking-wider"
 								>
 									{isVisiblePassword ? 'Ẩn' : 'Hiện'}
 								</button>
 							</div>
 
-							{message && <p className="text-center text-xs text-rose-500 font-bold">{message}</p>}
+							{message && <p className="text-center text-xs text-[var(--color-accent-3)] font-bold">{message}</p>}
 
 							<button
 								type="submit"
-								className="btn-push btn-push-cyan w-full text-xs py-3 mt-2"
+								className="btn-push btn-push-cyan w-full text-xs py-3 mt-2 font-bold"
 							>
 								Đăng nhập
 							</button>
@@ -96,7 +96,7 @@ export default function LoginClientPage() {
 								Chưa có tài khoản?{' '}
 								<Link
 									href="/auth/register"
-									className="text-[var(--color-accent-2)] hover:text-blue-700 font-bold hover:underline"
+									className="text-[var(--color-accent)] hover:underline font-bold"
 								>
 									Đăng ký ngay
 								</Link>

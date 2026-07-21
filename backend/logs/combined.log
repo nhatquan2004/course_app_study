@@ -32,3 +32,5 @@
 [2026-07-19 10:17:44] [INFO]: Email sent: <491c9155-12ce-201b-e7ba-8de139bb64ae@gmail.com>
 >>>>>>> Stashed changes
 [2026-07-19 16:14:51] [ERROR]: Không thể tạo chương Chapter validation failed: name: Cast to string failed for value "[ 'chương', '3:', 'javascript', 'cơ', 'bản' ]" (type Array) at path "name"
+[2026-07-20 20:52:57] [INFO]: Xóa danh mục ID: 6a5070b01baed3e38538b0b6
+[2026-07-20 20:53:08] [INFO]: Tạo danh mục thành công: nah nah nah a phùng thanh độ

@@ -64,16 +64,16 @@ export default function AssignmentTable({ initialSubmissions }: Props) {
 			prev.map((sub) =>
 				sub._id === id
 					? {
-							...sub,
-							score,
-							feedback,
-							status,
-							gradedAt: new Date().toISOString(),
-							grader: {
-								fullName: 'DOL Intelligence',
-								email: 'dol-intelligence@dolenglish.vn',
-							},
-					  }
+						...sub,
+						score,
+						feedback,
+						status,
+						gradedAt: new Date().toISOString(),
+						grader: {
+							fullName: 'DOL Intelligence',
+							email: 'dol-intelligence@dolenglish.vn',
+						},
+					}
 					: sub
 			)
 		);

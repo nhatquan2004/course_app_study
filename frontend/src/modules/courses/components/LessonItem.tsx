@@ -31,15 +31,15 @@ export default function LessonItem({ lesson, lessonIdx, onDelete, onEdit }: Less
 	}
 
 	return (
-		<div className="p-4 bg-white border border-[var(--color-rule)] rounded-xl hover:border-slate-300 transition-colors shadow-2xs">
+		<div className="p-3 bg-white border border-slate-200/80 rounded-lg hover:border-slate-300 transition-colors">
 			{isEditing ? (
-				<form onSubmit={handleSubmit} className="space-y-4">
+				<form onSubmit={handleSubmit} className="space-y-3">
 					<div className="flex items-center gap-2">
 						<input
 							type="text"
 							value={editName}
 							onChange={e => setEditName(e.target.value)}
-							className="flex-1 rounded-[var(--radius-input)] border border-[var(--color-rule)] px-3 py-2.5 text-xs text-[var(--color-ink)] outline-none focus:border-[var(--color-accent-2)]"
+							className="flex-1 rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-800 outline-none focus:border-blue-500"
 							required
 							autoFocus
 						/>
@@ -51,16 +51,16 @@ export default function LessonItem({ lesson, lessonIdx, onDelete, onEdit }: Less
 								id={`edit-preview-${lesson._id}`}
 								checked={editPreviewable}
 								onChange={e => setEditPreviewable(e.target.checked)}
-								className="h-4 w-4 rounded-sm border-[var(--color-rule)] text-[var(--color-accent-2)] focus:ring-[var(--color-accent-2)] cursor-pointer"
+								className="h-3.5 w-3.5 rounded-sm text-blue-600 focus:ring-blue-500 cursor-pointer"
 							/>
-							<label htmlFor={`edit-preview-${lesson._id}`} className="text-xs text-[var(--color-muted)] font-bold select-none cursor-pointer">
+							<label htmlFor={`edit-preview-${lesson._id}`} className="text-xs text-slate-600 select-none cursor-pointer">
 								Cho phép xem trước (Học thử)
 							</label>
 						</div>
-						<div className="flex gap-2">
+						<div className="flex gap-1.5">
 							<button
 								type="submit"
-								className="btn-push btn-push-cyan !py-1.5 !px-3 text-xs"
+								className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-md cursor-pointer"
 							>
 								OK
 							</button>
@@ -71,7 +71,7 @@ export default function LessonItem({ lesson, lessonIdx, onDelete, onEdit }: Less
 									setEditPreviewable(lesson.isPreviewable);
 									setIsEditing(false);
 								}}
-								className="btn-push btn-push-soft !py-1.5 !px-3 text-xs"
+								className="px-2.5 py-1 border border-slate-200 hover:bg-slate-50 text-slate-600 text-[11px] font-bold rounded-md cursor-pointer"
 							>
 								Hủy
 							</button>
@@ -80,14 +80,14 @@ export default function LessonItem({ lesson, lessonIdx, onDelete, onEdit }: Less
 				</form>
 			) : (
 				<div className="flex items-center justify-between text-xs">
-					<div className="flex items-center gap-2.5 text-[var(--color-ink)] font-medium">
-						<span className="text-[var(--color-accent-2)] font-black">✔</span>
-						<span className="text-xs">Bài giảng {lessonIdx + 1}: 📄 {lesson.lessonName}</span>
+					<div className="flex items-center gap-2 text-slate-600">
+						<span className="text-slate-400 font-bold">✔</span>
+						<span>Bài giảng {lessonIdx + 1}: 📄 {lesson.lessonName}</span>
 						{lesson._id.startsWith('temp_') && (
-							<span className="px-1.5 py-0.5 bg-rose-50 text-rose-500 border border-rose-100 text-[8px] font-black uppercase tracking-wider rounded-md">mới</span>
+							<span className="px-1 bg-rose-50 text-rose-500 border border-rose-100 text-[8px] font-bold uppercase rounded-sm">mới</span>
 						)}
 						{lesson.isPreviewable && (
-							<span className="px-2 py-0.5 bg-[var(--color-accent-2)]/10 text-[var(--color-accent-2)] border border-[var(--color-accent-2)]/20 text-[9px] font-black uppercase tracking-wider rounded-md">
+							<span className="ml-2 px-1.5 py-0.2 bg-blue-50 text-blue-600 border border-blue-100 text-[9px] font-bold uppercase rounded-sm">
 								Học thử
 							</span>
 						)}
@@ -100,14 +100,14 @@ export default function LessonItem({ lesson, lessonIdx, onDelete, onEdit }: Less
 								setEditPreviewable(lesson.isPreviewable);
 								setIsEditing(true);
 							}}
-							className="text-[var(--color-accent-2)] hover:text-blue-800 font-bold text-[10px] cursor-pointer uppercase tracking-wider"
+							className="text-blue-600 hover:text-blue-800 font-semibold text-[10px] cursor-pointer"
 						>
 							Sửa
 						</button>
 						<button
 							type="button"
 							onClick={() => onDelete(lesson._id)}
-							className="text-[var(--color-muted)] hover:text-rose-500 font-bold text-[10px] transition cursor-pointer uppercase tracking-wider"
+							className="text-slate-400 hover:text-red-500 font-semibold text-[10px] transition cursor-pointer"
 						>
 							Xóa
 						</button>

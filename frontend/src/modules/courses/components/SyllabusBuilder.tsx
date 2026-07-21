@@ -9,6 +9,7 @@ import {
 	saveSyllabusBatchAction,
 } from '../actions/chapterActions';
 import ChapterItem from './ChapterItem';
+import { HiOutlineArrowLeft, HiOutlineExclamationTriangle } from 'react-icons/hi2';
 
 type Chapter = {
 	_id: string;
@@ -99,11 +100,11 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 
 	function handleDeleteSection(chapterId: string) {
 		if (chapters.length <= 1) {
-			toast.error('Khóa học phải có ít nhất 1 chương học, không thể xóa chương duy nhất.');
+			toast.error('Khóa học phải có nhất 1 chương học, không thể xóa chương duy nhất.');
 			return;
 		}
 
-		if (!confirm('Bạn có chắc chắn muốn xóa chương này? Đọc kỹ: Thay đổi chỉ lưu khi bấm nút "Lưu thay đổi".')) return;
+		if (!confirm('Bạn có chắc chắn muốn xóa chương này? Toàn bộ bài giảng bên trong sẽ bị xóa tạm thời và chỉ lưu khi bấm nút "Lưu thay đổi".')) return;
 
 		setChapters(prev => prev.filter(c => c._id !== chapterId));
 		setLessonsMap(prev => {
@@ -167,7 +168,7 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 
 			const res = await saveSyllabusBatchAction(courseId, payload);
 			if (res && res.success) {
-				toast.success('Đã lưu toàn bộ thay đổi giáo trình vào Database thành công!');
+				toast.success('Đã lưu toàn bộ thay đổi giáo trình thành công!');
 				setHasChanges(false);
 				router.refresh();
 			} else {
@@ -215,34 +216,35 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 	}
 
 	return (
-		<div className="min-h-screen bg-[var(--color-paper-2)] text-[var(--color-ink)] w-full font-sans">
+		<div className="min-h-screen bg-[var(--color-paper)] text-[var(--color-ink)] w-full font-sans">
 			<div className="w-full min-h-screen">
 				{/* Header banner */}
-				<div className="border-b border-[var(--color-rule)] px-8 py-5.5 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-					<div className="flex flex-col gap-2">
+				<div className="border-b border-[var(--color-rule)] px-8 py-5 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+					<div className="flex flex-col gap-1.5">
 						<button
 							type="button"
 							onClick={() => {
 								if (hasChanges && !confirm('Bạn có thay đổi chưa lưu. Vẫn muốn rời đi?')) return;
 								router.push('/admin/course');
 							}}
-							className="inline-flex items-center gap-1.5 text-[10px] font-black text-[var(--color-accent-2)] hover:text-blue-800 transition cursor-pointer self-start uppercase tracking-wider"
+							className="inline-flex items-center gap-1.5 text-[9px] font-bold font-mono text-[var(--color-muted)] hover:text-[var(--color-accent)] transition cursor-pointer self-start uppercase tracking-wider"
 						>
-							← Quay lại danh sách khóa học
+							<HiOutlineArrowLeft className="h-3 w-3" />
+							<span>Quay lại khóa học</span>
 						</button>
 						<div className="flex items-center gap-3">
-							<h1 className="text-lg font-black text-[var(--color-ink)] tracking-tight">Khung chương trình</h1>
+							<h1 className="text-xl font-extrabold tracking-tight text-[var(--color-ink)] leading-none">Khung chương trình</h1>
 							{status === 'published' ? (
-								<span className="px-2.5 py-0.5 bg-[var(--color-mint)]/35 text-emerald-800 border border-emerald-600/20 text-[9px] font-black uppercase tracking-wider rounded-md">
+								<span className="px-2.5 py-0.5 bg-[var(--color-mint)] text-emerald-800 border border-emerald-600/10 text-[9px] font-bold font-mono uppercase tracking-wider rounded-md">
 									Đã xuất bản
 								</span>
 							) : (
-								<span className="px-2.5 py-0.5 bg-[var(--color-accent)]/35 text-amber-800 border border-amber-600/20 text-[9px] font-black uppercase tracking-wider rounded-md">
+								<span className="px-2.5 py-0.5 bg-[var(--color-paper-3)] text-amber-800 border border-[var(--color-rule)] text-[9px] font-bold font-mono uppercase tracking-wider rounded-md">
 									Đang chỉnh sửa
 								</span>
 							)}
 							{hasChanges && (
-								<span className="px-2 py-0.5 bg-[var(--color-accent-3)]/20 text-[var(--color-accent-3)] border border-[var(--color-accent-3)]/20 text-[8px] font-black uppercase tracking-wider rounded-md animate-pulse">
+								<span className="px-2 py-0.5 bg-[var(--color-accent-3)]/10 text-[var(--color-accent-3)] border border-[var(--color-accent-3)]/20 text-[8px] font-bold font-mono uppercase tracking-wider rounded-md animate-pulse">
 									Chưa lưu
 								</span>
 							)}
@@ -253,31 +255,34 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 					</div>
 
 					{/* Tool actions */}
-					<div className="flex items-center gap-3">
+					<div className="flex items-center gap-3.5">
 						<button
 							type="button"
 							onClick={handleSaveChanges}
 							disabled={!hasChanges || isSavingBatch}
-							className="btn-push btn-push-cyan text-xs"
+							className="btn-push btn-push-cyan text-xs font-bold"
 						>
 							{isSavingBatch ? 'Đang lưu...' : 'Lưu thay đổi'}
 						</button>
 						<button
 							type="button"
 							onClick={handlePublishToggle}
-							className="btn-push btn-push-soft text-xs"
+							className="btn-push btn-push-soft text-xs font-bold"
 						>
 							{status === 'published' ? 'Hạ xuống Bản nháp' : 'Xuất bản Khóa học'}
 						</button>
 					</div>
 				</div>
 
-				<div className="p-8 space-y-6 max-w-5xl mx-auto">
+				<div className="p-8 space-y-6 max-w-5xl mx-auto animate-in fade-in duration-300">
 					{/* Explainer card */}
 					<div className="tactile-card p-5 bg-white text-xs text-[var(--color-muted)] leading-relaxed flex items-center justify-between gap-4">
-						<span className="font-medium">Hãy tạo khóa học của bạn theo từng phần (chương), mỗi phần tập trung vào một mục tiêu học tập cụ thể. Sau đó thêm nội dung, hoạt động thực hành và các bài giảng tương ứng.</span>
+						<span className="font-medium">Hãy tạo khóa học của bạn theo từng phần (chương), mỗi phần tập trung vào một mục tiêu học tập cụ thể. Sau đó thêm các bài giảng tương ứng.</span>
 						{hasChanges && (
-							<span className="text-[var(--color-accent-3)] font-black text-[11px] shrink-0 uppercase tracking-wide">⚠️ Chưa lưu vào Database!</span>
+							<div className="flex items-center gap-1.5 text-[var(--color-accent-3)] font-bold text-[10px] shrink-0 uppercase tracking-wider font-mono">
+								<HiOutlineExclamationTriangle className="h-4.5 w-4.5 text-[var(--color-accent-3)]" />
+								<span>Chưa lưu vào Database!</span>
+							</div>
 						)}
 					</div>
 
@@ -299,7 +304,7 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 						))}
 
 						{chapters.length === 0 && !isAddingSection && (
-							<div className="tactile-card text-center py-10 bg-white/50 border-dashed">
+							<div className="tactile-card text-center py-10 bg-white/50 border-dashed border-[var(--color-rule)]">
 								<p className="text-xs text-[var(--color-muted)] italic">Chưa có chương học nào được tạo. Nhấp vào nút phía dưới để thêm chương đầu tiên.</p>
 							</div>
 						)}
@@ -307,7 +312,7 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 						{isAddingSection ? (
 							<form onSubmit={handleAddSection} className="tactile-card bg-white p-6 space-y-4">
 								<div>
-									<label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)] mb-1.5">
+									<label className="block text-[9px] font-bold font-mono uppercase tracking-wider text-[var(--color-muted)] mb-1.5">
 										Nhập tiêu đề chương (phần)
 									</label>
 									<input
@@ -315,7 +320,7 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 										value={newSectionName}
 										onChange={e => setNewSectionName(e.target.value)}
 										placeholder="Ví dụ: Giới thiệu khóa học"
-										className="w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-4 py-2.5 text-xs text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent-2)] focus:ring-2 focus:ring-[var(--color-accent-2)]/20 shadow-2xs"
+										className="w-full rounded-[var(--radius-input)] border border-[var(--color-rule)] bg-white px-4 py-2.5 text-xs text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/15 shadow-2xs"
 										required
 										autoFocus
 									/>
@@ -343,7 +348,7 @@ export default function SyllabusBuilder({ courseId, courseName, initialChapters,
 							<button
 								type="button"
 								onClick={() => setIsAddingSection(true)}
-								className="btn-push btn-push-soft text-xs"
+								className="btn-push btn-push-soft text-xs font-bold"
 							>
 								<span>+</span> Chương (Phần)
 							</button>

@@ -22,19 +22,19 @@ export default function CourseList({
 	);
 
 	return (
-		<div className="w-full flex flex-col gap-4">
+		<div className="w-full max-w-5xl flex flex-col gap-5 animate-in fade-in duration-300">
 			<div className="flex justify-start">
 				<SearchBar
 					value={searchQuery}
 					onChange={setSearchQuery}
-					placeholder="Search courses..."
+					placeholder="Tìm kiếm khóa học..."
 					className="w-full md:w-80"
 				/>
 			</div>
 
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-3.5">
 				{filteredCourses.length === 0 ? (
-					<div className="text-center text-slate-400 text-sm py-12">
+					<div className="text-center text-[var(--color-muted)] text-xs py-16 border border-dashed border-[var(--color-rule)] rounded-[20px] bg-white/40 italic">
 						Không tìm thấy khóa học nào.
 					</div>
 				) : (

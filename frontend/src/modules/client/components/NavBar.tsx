@@ -2,33 +2,41 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+	HiOutlineAcademicCap,
+	HiOutlineFolder,
+	HiOutlineUsers,
+	HiOutlineClipboardDocumentList,
+} from 'react-icons/hi2';
 
 const links = [
-	{ href: '/admin/course', label: 'Khóa học' },
-	{ href: '/admin/category', label: 'Danh mục' },
-	{ href: '/admin/user_management', label: 'Quản lý người dùng' },
-	{ href: '/admin/assignment', label: 'Bài tập' },
+	{ href: '/admin/course', label: 'Khóa học', Icon: HiOutlineAcademicCap },
+	{ href: '/admin/category', label: 'Danh mục', Icon: HiOutlineFolder },
+	{ href: '/admin/user_management', label: 'Người dùng', Icon: HiOutlineUsers },
+	{ href: '/admin/assignment', label: 'Bài tập', Icon: HiOutlineClipboardDocumentList },
 ];
 
 export default function NavBar() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="flex flex-col gap-3">
+		<nav className="flex flex-col gap-1.5">
 			{links.map(link => {
-				const isActive = pathname === link.href;
+				const isActive = pathname.startsWith(link.href);
+				const Icon = link.Icon;
 
 				return (
 					<Link
 						key={link.href}
 						href={link.href}
-						className={`rounded-xl px-4 py-3 text-left text-xs font-black transition-all duration-150 border-2 select-none uppercase tracking-wider ${
+						className={`flex items-center gap-3.5 py-2.5 pr-4 text-left text-[11px] font-bold tracking-wider uppercase transition-all duration-150 select-none border-l-2 rounded-r-lg ${
 							isActive
-								? 'bg-[var(--color-accent)] text-[var(--color-ink)] border-[var(--color-ink)] shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
-								: 'text-[var(--color-muted)] border-transparent hover:border-[var(--color-rule)] hover:bg-[var(--color-paper-2)]/60 hover:text-[var(--color-ink)]'
+								? 'border-[var(--color-accent)] text-[var(--color-accent)] bg-[var(--color-paper-2)] pl-3.5 font-black'
+								: 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]/30 pl-3'
 						}`}
 					>
-						{link.label}
+						<Icon className={`h-4.5 w-4.5 ${isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)]'}`} />
+						<span>{link.label}</span>
 					</Link>
 				);
 			})}

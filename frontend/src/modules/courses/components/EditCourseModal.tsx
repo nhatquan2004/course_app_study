@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function EditCourseModal({ course, categories, onCloseModal }: Props) {
-	const handleClose = onCloseModal || (() => {});
+	const handleClose = onCloseModal || (() => { });
 	const router = useRouter();
 	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(
 		course.categoryIds || [],
@@ -190,11 +190,10 @@ export default function EditCourseModal({ course, categories, onCloseModal }: Pr
 											e.stopPropagation();
 											handleCategoryToggle(cat._id);
 										}}
-										className={`flex items-center justify-between px-3.5 py-2 text-xs rounded-lg cursor-pointer select-none transition ${
-											isSelected
+										className={`flex items-center justify-between px-3.5 py-2 text-xs rounded-lg cursor-pointer select-none transition ${isSelected
 												? 'bg-[var(--color-accent-2)]/10 text-[var(--color-accent-2)] font-bold'
 												: 'text-slate-700 hover:bg-[var(--color-paper-2)]'
-										}`}
+											}`}
 									>
 										<span>{cat.categoryName}</span>
 										{isSelected && <span className="text-[var(--color-accent-2)] font-bold">✓</span>}
